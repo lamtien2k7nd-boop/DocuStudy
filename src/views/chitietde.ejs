@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title || 'Tài liệu miễn phí' %></title>
+    <link rel="stylesheet" href="/css/basev2.css">
+    <link rel="stylesheet" href="/css/chi_tiet_de.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="custom-body">
+    <%- include('partials/header') %>
+
+    <div class="paper-texture"></div>
+
+    <main class="main-container">
+        <div class="post-category"><%= postCategory %></div>
+        <h1 class="entry-title">
+            <%= entryTitle.main %> 
+            <% if (entryTitle.sub) { %>
+                <span><%= entryTitle.sub %></span>
+            <% } %>
+        </h1>
+
+        <p class="post-description"><%= postDescription %></p>
+
+        <!-- Enhanced Tag Display Section -->
+        <% if (topics && topics.length > 0) { %>
+            <% var hasTags = topics.some(t => t.items && t.items.length > 0); %>
+            <% if (hasTags) { %>
+                <div class="doc-tags-container">
+                    <div class="tags-header">
+                        <i data-lucide="tags"></i>
+                        <span>Thông tin phân loại</span>
+                    </div>
+                    <div class="tags-cloud">
+                        <% topics.forEach(topic => { %>
+                            <% if (topic.items && topic.items.length > 0) { %>
+                                <% topic.items.forEach(item => { %>
+                                    <div class="tag-badge">
+                                        <span class="tag-topic-name"><%= topic.title %></span>
+                                        <span class="tag-content-val"><%= typeof item === 'string' ? item : item.content %></span>
+                                    </div>
+                                <% }); %>
+                            <% } %>
+                        <% }); %>
+                    </div>
+                </div>
+
+                <style>
+                    .doc-tags-container {
+                        margin-bottom: 48px;
+                        padding: 24px;
+                        background: rgba(255, 255, 255, 0.6);
+                        backdrop-filter: blur(10px);
+                        border-radius: 24px;
+                        border: 1px solid rgba(255, 107, 0, 0.1);
+                        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.03);
+                    }
+                    .tags-header {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        margin-bottom: 20px;
+                        color: #0f172a;
+                        font-weight: 700;
+                        font-size: 15px;
+                    }
+                    .tags-header svg {
+                        width: 18px;
+                        height: 18px;
+                        color: #ff6b00;
+                    }
+                    .tags-cloud {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 12px;
+                    }
+                    .tag-badge {
+                        display: inline-flex;
+                        align-items: center;
+                        background: #ffffff;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 12px;
+                        overflow: hidden;
+                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                        cursor: default;
+                    }
+                    .tag-badge:hover {
+                        transform: translateY(-2px);
+                        border-color: #ff6b00;
+                        box-shadow: 0 4px 12px rgba(255, 107, 0, 0.1);
+                    }
+                    .tag-topic-name {
+                        padding: 6px 12px;
+                        background: #f8fafc;
+                        color: #64748b;
+                        font-size: 11px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                        border-right: 1px solid #e2e8f0;
+                    }
+                    .tag-content-val {
+                        padding: 6px 14px;
+                        color: #1e293b;
+                        font-size: 13.5px;
+                        font-weight: 600;
+                    }
+                </style>
+            <% } %>
+        <% } %>
+
+        <h2 class="section-title">Cấu trúc nội dung đề thi</h2>
+
+        <div class="grid-topics">
+            <% if (topics && topics.length) { %>
+                <% topics.forEach(topic => { %>
+                    <div class="topic-card">
+                        <h3><%= topic.title %></h3>
+                        <ul>
+                            <% topic.items.forEach(item => { %>
+                                <li><%= typeof item === 'string' ? item : item.content %></li>
+                            <% }); %>
+                        </ul>
+                    </div>
+                <% }); %>
+            <% } %>
+        </div>
+
+        <h2 class="section-title">Tải tài liệu PDF dữ liệu gốc</h2>
+
+        <div class="download-wrapper">
+            <div class="download-container">
+                <a href="/download/<%= document.id %>" class="download-card-front">
+                    <div class="icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 16l-5-5h3v-7h4v7h3l-5 5zm9 2v2h-18v-2h18z" />
+                        </svg>
+                    </div>
+                    <span class="btn-text-1">TẢI ĐỀ VÀ ĐÁP ÁN</span>
+                    <span class="btn-text-2"><%= downloadHint || 'Định dạng PDF • Bản chuẩn gốc' %></span>
+                </a>
+            </div>
+        </div>
+        <!-- ===== SECTION BÌNH LUẬN ===== -->
+        <section class="comment-section">
+        <div class="container">
+            <h2 class="section-title">Bình luận về tài liệu</h2>
+            <p class="section-subtitle"><%= totalComments %> bình luận</p>
+
+            <!-- Form thêm comment (chỉ hiển thị nếu đã đăng nhập) -->
+            <% if (isLoggedIn) { %>
+            <form id="commentForm" action="/chitietde/<%= document.slug %>/comment" method="POST" class="comment-form">
+                <div class="comment-form-group">
+                <textarea name="content" placeholder="Viết bình luận của bạn..." required class="comment-textarea"></textarea>
+                </div>
+                <button type="submit" class="comment-submit-btn">Gửi bình luận</button>
+            </form>
+            <% } else { %>
+            <div class="login-required">
+                <p><i data-lucide="lock"></i> Vui lòng <a href="#" onclick="openModal()">đăng nhập</a> để bình luận.</p>
+            </div>
+            <% } %>
+
+            <!-- Danh sách comment -->
+            <div class="comment-list">
+            <% if (comments && comments.length) { %>
+                <% comments.forEach(comment => { %>
+                <%- include('partials/comment-item', { comment: comment }) %>
+                <% }); %>
+            <% } else { %>
+                <p class="empty-message">Chưa có bình luận nào. Hãy là người đầu tiên!</p>
+            <% } %>
+            </div>
+
+            <!-- Phân trang comment -->
+            <% if (totalCommentPages > 1) { %>
+            <div class="pagination">
+                <% for (let i = 1; i <= totalCommentPages; i++) { %>
+                <a href="?cpage=<%= i %>" class="page-link <%= i === currentCommentPage ? 'active' : '' %>">
+                    <%= i %>
+                </a>
+                <% } %>
+            </div>
+            <% } %>
+        </div>
+        </section>
+    </main>
+
+    <%- include('partials/footer') %>
+
+    <script src="/js/trang_chu.js"></script>
+    <script src="/js/chi_tiet_de.js"></script>
+</body>
+
+</html>

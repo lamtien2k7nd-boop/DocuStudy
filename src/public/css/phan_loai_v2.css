@@ -1,0 +1,253 @@
+/* ==========================================================================
+   1. LAYOUT & TYPOGRAPHY STYLES
+   ========================================================================== */
+
+.cate-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 3rem 0 1rem 0;
+    color: #1f2937;
+}
+
+.cate-description {
+    text-align: center;
+    color: #6b7280;
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+}
+
+.cate-description p {
+    margin: 0;
+}
+
+.cate-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    padding: 0 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Section Containers */
+.hsa-cate-section,
+.tsa-cate-section,
+.vact-cate-section,
+.spt-cate-section,
+.thpt-cate-section,
+.g12-cate-section,
+.g11-cate-section,
+.g10-cate-section {
+    display: flex;
+    flex-direction: row; /* Chuyển sang hàng ngang để chứa nhiều Card */
+    flex-wrap: wrap;
+    gap: 2rem; 
+}
+
+.section-container {
+    display:grid;
+    grid-template-columns: repeat(5,1fr);
+    gap: 2rem;
+}
+
+.cate-section-title {
+    width: 100%; /* Chiếm trọn hàng để làm tiêu đề phân mục */
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #111827;
+    margin: 1rem 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    letter-spacing: -0.025em;
+}
+
+.cate-section-title::before {
+    content: "";
+    display: block;
+    width: 6px;
+    height: 1.5rem;
+    background: linear-gradient(to bottom, #f97316, #ea580c);
+    border-radius: 99px;
+}
+
+/* ==========================================================================
+   2. TỐI ƯU CẤU TRÚC FOLDER CARD (GÓC BO MƯỢT + GRADIENT LINÊN MẠCH)
+   ========================================================================== */
+
+/* Thẻ link bọc ngoài Card */
+.cate-content a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    
+    /* Subtle layered shadow for premium depth */
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.05)) drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+    transition: filter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hiệu ứng khi Hover toàn bộ thẻ */
+.cate-content a:hover {
+    filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.15));
+}
+
+.cate-content a:hover .section-card {
+    transform: translateY(-8px) scale(1.02);
+}
+
+/* Thân Card chính */
+.section-card {
+    width: 250px;
+    height: 148px;
+    position: relative;
+    
+    /* Căn giữa chữ tiêu đề */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 42px 24px 20px 24px; /* Trừ khoảng trống phía trên cho tai Folder */
+    box-sizing: border-box;
+
+    /* Nền Gradient mặc định phòng trường hợp thiếu ID màu */
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+
+    /* KỸ THUẬT MASK SVG: 
+       Cắt khối chữ nhật vuông thành hình Folder bo tròn góc lõm hoàn chỉnh.
+    */
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 190' preserveAspectRatio='none'><path d='M0,30 Q0,12 12,12 L115,12 Q127,12 135,22 L141,30 Q147,38 157,38 L302,38 Q320,38 320,56 L320,172 Q320,190 302,190 L18,190 Q0,190 0,172 Z' fill='black'/></svg>");
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 190' preserveAspectRatio='none'><path d='M0,30 Q0,12 12,12 L115,12 Q127,12 135,22 L141,30 Q147,38 157,38 L302,38 Q320,38 320,56 L320,172 Q320,190 302,190 L18,190 Q0,190 0,172 Z' fill='black'/></svg>");
+    
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Thêm lớp bóng mờ phía trên để tăng độ "elegant" */
+.section-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.05) 100%);
+    pointer-events: none;
+}
+
+/* Định dạng tiêu đề bên trong Card */
+.section-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+    line-height: 1.4;
+    max-width: 100%;
+    word-wrap: break-word;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}
+
+/* ==========================================================================
+   3. HỆ THỐNG MÃ MÀU GRADIENT CHI TIẾT THEO MÔN HỌC (ELEGANT VERSION)
+   ========================================================================== */
+#tab-dinh-luong { background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); } /* Indigo */
+#tab-dinh-tinh  { background: linear-gradient(135deg, #be123c 0%, #9f1239 100%); } /* Deep Rose */
+#tab-tieng-anh  { background: linear-gradient(135deg, #b45309 0%, #92400e 100%); } /* Rich Amber */
+#tab-khoa-hoc   { background: linear-gradient(135deg, #047857 0%, #064e3b 100%); } /* Forest Green */
+#tab-luyen-de-hsa  { background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%); } /* Purple */
+
+/* --- SECTION TSA --- */
+#tab-td-toan-hoc { background: linear-gradient(135deg, #0369a1 0%, #075985 100%); }
+#tab-td-doc-hieu { background: linear-gradient(135deg, #e11d48 0%, #be123c 100%); }
+#tab-td-khoa-hoc { background: linear-gradient(135deg, #4d7c0f 0%, #3f6212 100%); }
+#tab-luyen-de-tsa   { background: linear-gradient(135deg, #7e22ce 0%, #6b21a8 100%); }
+
+/* --- SECTION VACT --- */
+#tab-ngon-ngu { background: linear-gradient(135deg, #9f1239 0%, #881337 100%); }
+#tab-toan-hoc-vact    { background: linear-gradient(135deg, #0891b2 0%, #155e75 100%); }
+#tab-td-khoa-hoc-vact  { background: linear-gradient(135deg, #059669 0%, #064e3b 100%); }
+#tab-luyen-de-vact  { background: linear-gradient(135deg, #c2410c 0%, #9a3412 100%); }
+
+/* --- SECTION SPT & THPT --- */
+#spt-luyen-thi  { background: linear-gradient(135deg, #0369a1 0%, #1e40af 100%); }
+#thpt-luyen-thi { background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%); }
+
+/* --- SECTION LỚP 12 --- */
+#tab-toan-12   { background: linear-gradient(135deg, #c2410c 0%, #9a3412 100%); }
+#tab-van-12    { background: linear-gradient(135deg, #a21caf 0%, #86198f 100%); }
+#tab-anh-12    { background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%); }
+#tab-ly-12     { background: linear-gradient(135deg, #047857 0%, #065f46 100%); }
+#tab-hoa-12    { background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%); }
+#tab-sinh-12   { background: linear-gradient(135deg, #059669 0%, #064e3b 100%); }
+#tab-su-12     { background: linear-gradient(135deg, #78350f 0%, #451a03 100%); }
+#tab-dia-12    { background: linear-gradient(135deg, #3730a3 0%, #312e81 100%); }
+#tab-gdkt-12 { background: linear-gradient(135deg, #db2777 0%, #9d174d 100%); }
+#tab-tin-12    { background: linear-gradient(135deg, #0e7490 0%, #155e75 100%); }
+
+/* --- SECTION LỚP 11 (Tone màu dịu hơn lớp 12) --- */
+#tab-toan-11   { background: linear-gradient(135deg, #e11d48 0%, #1e293b 150%); }
+#tab-van-11    { background: linear-gradient(135deg, #475569 0%, #334155 100%); }
+#tab-anh-11    { background: linear-gradient(135deg, #0f172a 0%, #020617 100%); }
+#tab-ly-11     { background: linear-gradient(135deg, #0369a1 0%, #ca8a04 160%); }
+#tab-hoa-11    { background: linear-gradient(135deg, #581c87 0%, #4a044e 100%); }
+#tab-sinh-11   { background: linear-gradient(135deg, #0f766e 0%, #0369a1 100%); }
+#tab-su-11     { background: linear-gradient(135deg, #7e22ce 0%, #166534 150%); }
+#tab-dia-11    { background: linear-gradient(135deg, #581c87 0%, #be123c 100%); }
+#tab-gdkt-11 { background: linear-gradient(135deg, #ea580c 0%, #0369a1 150%); }
+#tab-tin-11    { background: linear-gradient(135deg, #15803d 0%, #166534 100%); }
+
+/* --- SECTION LỚP 10 --- */
+#tab-toan-10   { background: linear-gradient(135deg, #3b0764 0%, #4c1d95 100%); }
+#tab-van-10    { background: linear-gradient(135deg, #16a34a 0%, #4d7c0f 100%); }
+#tab-anh-10    { background: linear-gradient(135deg, #0f766e 0%, #0891b2 150%); }
+#tab-ly-10     { background: linear-gradient(135deg, #475569 0%, #1e293b 100%); }
+#tab-hoa-10    { background: linear-gradient(135deg, #e11d48 0%, #7c2d12 150%); }
+#tab-sinh-10   { background: linear-gradient(135deg, #1e40af 0%, #0f172a 120%); }
+#tab-su-10     { background: linear-gradient(135deg, #ca8a04 0%, #713f12 130%); }
+#tab-dia-10    { background: linear-gradient(135deg, #4338ca 0%, #4f46e5 100%); }
+#tab-gdkt-10 { background: linear-gradient(135deg, #be123c 0%, #e11d48 100%); }
+#tab-tin-10    { background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%); }
+
+
+/* ==========================================================================
+   4. RESPONSIVE DESIGN (TỐI ƯU TRÊN MỌI THIẾT BỊ)
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .section-container {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Tự thu nhỏ Card trên Tablet */
+        gap: 1.5rem;
+    }
+    .section-card {
+        height: 130px;
+        padding-top: 36px;
+    }
+}
+
+@media (max-width: 768px) {
+    .cate-title {
+        font-size: 2.25rem;
+        margin-top: 2rem;
+    }
+
+    .cate-description {
+        font-size: 1.05rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .cate-section-title {
+        font-size: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+    }
+
+    .cate-content {
+        padding: 0 1rem;
+        gap: 3rem;
+    }
+}

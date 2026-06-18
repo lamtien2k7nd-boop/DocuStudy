@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đề đánh giá năng lực HSA Toán học số 43 - Siêu Cải Tiến</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           1. KHỞI TẠO NỀN SÁNG CAO CẤP & HIỆU ỨNG ÁNH SÁNG NGẦM (AMBIENT GLOW)
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            line-height: 1.6;
+            padding-bottom: 100px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Đốm sáng màu sắc làm điểm nhấn phía sau nền (Ambient Orbs) */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            top: -200px;
+            right: -100px;
+            background: radial-gradient(circle, rgba(255, 107, 0, 0.08) 0%, rgba(255,255,255,0) 70%);
+            z-index: -2;
+            pointer-events: none;
+        }
+        
+        body::after {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            top: 400px;
+            left: -100px;
+            background: radial-gradient(circle, rgba(52, 211, 153, 0.08) 0%, rgba(255,255,255,0) 70%);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* Lớp vân giấy nhám bao phủ toàn trang */
+        .paper-texture {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            mix-blend-mode: multiply;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ==========================================================================
+           2. HEADER KÍNH MỜ NÂNG CAO (FROSTED GLASS)
+           ========================================================================== */
+        .site-header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 18px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0f172a;
+            text-decoration: none;
+            letter-spacing: -0.03em;
+        }
+
+        .logo span {
+            color: #ff6b00;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            font-size: 15px;
+            position: relative;
+            padding: 4px 0;
+            transition: color 0.3s ease;
+        }
+
+        /* Thanh trượt chỉ báo tinh tế dưới chân menu khi hover */
+        .nav-menu a::after {
+            content: "";
+            position: absolute;
+            bottom: 0; left: 0; width: 0; height: 2px;
+            background: #ff6b00;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .nav-menu a:hover {
+            color: #0f172a;
+        }
+
+        .btn-login {
+            background: #0f172a;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.15);
+        }
+
+        /* ==========================================================================
+           3. MAIN LAYOUT & HERO SECTION
+           ========================================================================== */
+        .main-container {
+            max-width: 880px;
+            margin: 80px auto 0 auto;
+            padding: 0 24px;
+        }
+
+        .post-category {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.12) 0%, rgba(255, 140, 0, 0.06) 100%);
+            color: #ff6b00;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 107, 0, 0.15);
+        }
+
+        .entry-title {
+            font-size: 44px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.25;
+            letter-spacing: -0.04em;
+            margin-bottom: 24px;
+        }
+
+        .entry-title span {
+            background: linear-gradient(to right, #ff6b00, #ff9100);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .post-description {
+            font-size: 17px;
+            color: #475569;
+            margin-bottom: 50px;
+            border-left: 3px solid #e2e8f0;
+            padding-left: 20px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 28px;
+            letter-spacing: -0.02em;
+        }
+
+        /* ==========================================================================
+           4. THẺ CARD PHÁT SÁNG THEO CHUỘT (DYNAMIC MOUSE GLOW)
+           ========================================================================== */
+        .grid-topics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .topic-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 28px;
+            border: 1px solid rgba(15, 23, 42, 0.04);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.01);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+        }
+
+        /* Hiệu ứng tia sáng quét ngầm ẩn sẵn (Glow Overlay) */
+        .topic-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(800px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(255, 107, 0, 0.06), transparent 40%);
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .topic-card:hover::before {
+            opacity: 1;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 30px 60px rgba(15, 23, 42, 0.06);
+        }
+
+        .topic-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .topic-card ul {
+            list-style: none;
+            position: relative;
+            z-index: 2;
+        }
+
+        .topic-card li {
+            font-size: 14.5px;
+            color: #475569;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Icon dot màu cam thay thế bullet tròn nhàm chán */
+        .topic-card li::before {
+            content: "";
+            width: 5px; height: 5px;
+            background: #ff6b00;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ==========================================================================
+           5. NÚT TẢI ĐỀ FOLDER 3D PHÁT SÁNG NÂNG CAO (3D HYPER MASK)
+           ========================================================================== */
+        .download-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 60px 0;
+        }
+
+        .download-container {
+            position: relative;
+            width: 340px;
+            height: 190px;
+            perspective: 1000px; /* Tạo không gian 3D */
+        }
+
+        /* Khối nút chính */
+        .download-card-front {
+            position: absolute;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
+            
+            /* Áp dụng Masking */
+            -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 190' preserveAspectRatio='none'><path d='M0,30 Q0,12 12,12 L115,12 Q127,12 135,22 L141,30 Q147,38 157,38 L302,38 Q320,38 320,56 L320,172 Q320,190 302,190 L18,190 Q0,190 0,172 Z' fill='black'/></svg>");
+            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 190' preserveAspectRatio='none'><path d='M0,30 Q0,12 12,12 L115,12 Q127,12 135,22 L141,30 Q147,38 157,38 L302,38 Q320,38 320,56 L320,172 Q320,190 302,190 L18,190 Q0,190 0,172 Z' fill='black'/></svg>");
+            -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+            -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Lớp phủ dải sáng chéo chạy qua khi Hover (Shimmer Effect) */
+        .download-card-front::before {
+            content: "";
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            transition: left 0.6s ease;
+        }
+
+        .download-container:hover .download-card-front::before {
+            left: 150%;
+        }
+
+        /* Lớp bóng đổ 3D sâu sắc phía sau */
+        .download-container::after {
+            content: "";
+            position: absolute;
+            top: 14px; left: 14px; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.4) 0%, rgba(15, 23, 42, 0.1) 100%);
+            z-index: 1;
+            transition: transform 0.3s ease, top 0.3s ease, left 0.3s ease;
+
+            -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 190' preserveAspectRatio='none'><path d='M0,30 Q0,12 12,12 L115,12 Q127,12 135,22 L141,30 Q147,38 157,38 L302,38 Q320,38 320,56 L320,172 Q320,190 302,190 L18,190 Q0,190 0,172 Z' fill='black'/></svg>");
+            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 190' preserveAspectRatio='none'><path d='M0,30 Q0,12 12,12 L115,12 Q127,12 135,22 L141,30 Q147,38 157,38 L302,38 Q320,38 320,56 L320,172 Q320,190 302,190 L18,190 Q0,190 0,172 Z' fill='black'/></svg>");
+            -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+        }
+
+        /* Tương tác tinh tế khi Hover & Active (Click) */
+        .download-container:hover .download-card-front {
+            transform: translate(4px, 4px);
+        }
+        
+        .download-container:active .download-card-front {
+            transform: translate(11px, 11px); /* Nút lún hẳn xuống kịch lớp bóng phía sau */
+        }
+        .download-container:active::after {
+            transform: scale(0.98);
+        }
+
+        /* Thiết kế chi tiết nội dung trong nút bấm */
+        .download-card-front .icon-wrapper {
+            width: 56px; height: 56px;
+            background: rgba(255, 107, 0, 0.1);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 107, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .download-container:hover .icon-wrapper {
+            transform: scale(1.1) rotate(-10deg);
+        }
+
+        .download-card-front svg {
+            width: 24px; height: 24px;
+            fill: #ff6b00;
+        }
+
+        .download-card-front .btn-text-1 {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+        }
+
+        .download-card-front .btn-text-2 {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="paper-texture"></div>
+
+    <header class="site-header">
+        <div class="header-container">
+            <a href="#" class="logo">Docu<span>Study.</span></a>
+            <ul class="nav-menu">
+                <li><a href="#" class="active">Trang chủ</a></li>
+                <li><a href="#">Tài liệu</a></li>
+                <li><a href="#">Luyện thi</a></li>
+                <li><a href="#">Lớp học</a></li>
+            </ul>
+            <a href="#" class="btn-login">Đăng nhập</a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="post-category">Định lượng HSA</div>
+        <h1 class="entry-title">Đề đánh giá năng lực HSA <span>Toán học số 43</span></h1>
+        
+        <p class="post-description">
+            Tài liệu độc quyền mô phỏng chính xác cấu trúc bài thi Tư duy định lượng kì thi Đánh giá năng lực Đại học Quốc gia Hà Nội. Hệ thống bài tập phân hóa cao giúp bứt phá điểm số giai đoạn nước rút.
+        </p>
+
+        <h2 class="section-title">Cấu trúc nội dung đề thi</h2>
+        
+        <div class="grid-topics">
+            <div class="topic-card">
+                <h3>Hàm số & Đồ thị</h3>
+                <ul>
+                    <li>Cực trị của hàm số bậc cao</li>
+                    <li>Đạo hàm và ứng dụng thực tế</li>
+                    <li>Diện tích hình phẳng (Tích phân)</li>
+                </ul>
+            </div>
+            <div class="topic-card">
+                <h3>Đại số & Tối ưu</h3>
+                <ul>
+                    <li>Bất phương trình mũ & Logarit</li>
+                    <li>Cấp số cộng và bài toán dãy số</li>
+                    <li>Bài toán tối ưu hóa kinh tế</li>
+                </ul>
+            </div>
+            <div class="topic-card">
+                <h3>Hình học Không gian</h3>
+                <ul>
+                    <li>Tỉ số thể tích hình chóp, lăng trụ</li>
+                    <li>Phương pháp tọa độ hóa Oxyz</li>
+                    <li>Thiết diện và khoảng cách phức tạp</li>
+                </ul>
+            </div>
+            <div class="topic-card">
+                <h3>Xác suất Thống kê</h3>
+                <ul>
+                    <li>Xác suất cổ điển & Có điều kiện</li>
+                    <li>Thống kê mẫu số liệu ghép nhóm</li>
+                    <li>Tính toán tứ phân vị thực nghiệm</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2 class="section-title">Tải tài liệu PDF dữ liệu gốc</h2>
+
+        <div class="download-wrapper">
+            <div class="download-container">
+                <a href="#" class="download-card-front">
+                    <div class="icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 16l-5-5h3v-7h4v7h3l-5 5zm9 2v2h-18v-2h18z"/></svg>
+                    </div>
+                    <span class="btn-text-1">TẢI ĐỀ VÀ ĐÁP ÁN</span>
+                    <span class="btn-text-2">Định dạng PDF • Bản chuẩn gốc</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const cards = document.querySelectorAll('.topic-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // Gán tọa độ chuột vào CSS Variables để xử lý radial-gradient
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body>
+</html>

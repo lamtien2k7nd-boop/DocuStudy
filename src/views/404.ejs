@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Không tìm thấy trang</title>
+    <link rel="stylesheet" href="/css/basev2.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="custom-body">
+    <%- include('partials/header') %>
+
+    <main style="display: flex; justify-content: center; align-items: center; min-height: 60vh; padding: 20px;">
+        <div style="text-align: center; max-width: 500px;">
+            <div style="font-size: 80px; margin-bottom: 20px;">🔍</div>
+            <h1 style="font-size: 48px; font-weight: 900; color: #0f172a; margin-bottom: 8px;">404</h1>
+            <h2 style="font-size: 24px; font-weight: 700; color: #1e293b; margin-bottom: 12px;">
+                Không tìm thấy trang
+            </h2>
+            <p style="color: #64748b; font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
+                <%= message || 'Trang bạn đang tìm kiếm không tồn tại hoặc đã bị di chuyển.' %>
+            </p>
+            <a href="/" style="display: inline-block; padding: 12px 32px; background: #f97316; color: white; border-radius: 30px; text-decoration: none; font-weight: 700;">
+                <i data-lucide="home" style="width: 18px; height: 18px; display: inline; margin-right: 8px;"></i>
+                Về trang chủ
+            </a>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

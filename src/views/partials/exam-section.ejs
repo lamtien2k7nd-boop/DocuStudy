@@ -1,0 +1,33 @@
+<!-- Exam Section with Tabs Component -->
+<% const { section } = locals; %>
+
+<section class="<%= section.wrapperClass %>">
+  <div class="container">
+    <div class="<%= section.innerClass %>">
+      <div class="<%= section.headerClass %>">
+        <h2 class="section-title"><%= section.title %></h2>
+        <div class="tab-bar">
+          <div class="tab-list">
+            <% section.tabs.forEach((tab, idx) => { %>
+              <button class="tab-btn <%= idx === 0 ? 'active' : '' %>" data-target="<%= tab.targetId %>">
+                <%= tab.label %>
+              </button>
+            <% }); %>
+          </div>
+          <div class="tab-divider"></div>
+          <div class="tab-pagination">
+            <button class="btn-prev-page"><i data-lucide="chevron-left"></i></button>
+            <button class="btn-next-page"><i data-lucide="chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="tab-content-wrapper">
+        <% section.tabs.forEach((tab, idx) => { %>
+          <div class="tab-content <%= idx === 0 ? 'active' : '' %>" id="<%= tab.targetId %>">
+            <%- include('tab-content.ejs', { tabData: tab.content }) %>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+</section>

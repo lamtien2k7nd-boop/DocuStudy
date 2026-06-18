@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/basev2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --bg-body: #f8fafc;
+        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg-body); margin: 0; }
+        .profile-container { max-width: 1000px; margin: 40px auto; padding: 20px; }
+        .profile-header { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 20px; }
+        .stat-icon { width: 50px; height: 50px; background: #e0e7ff; color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+        .stat-info h3 { margin: 0; font-size: 0.875rem; color: #64748b; }
+        .stat-info p { margin: 0; font-size: 1.5rem; font-weight: 700; }
+        
+        .profile-card { background: white; border-radius: 20px; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); border: 1px solid #e2e8f0; overflow: hidden; }
+        .card-header { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); padding: 30px; color: white; }
+        .card-body { padding: 40px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+        
+        .field-group label { display: block; font-size: 0.875rem; color: #64748b; margin-bottom: 8px; font-weight: 500; }
+        .field-group .value { font-size: 1rem; font-weight: 600; color: #1e293b; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+        
+        .btn-change-pass { grid-column: span 2; padding: 12px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.2s; text-align: center; }
+        .btn-change-pass:hover { background: #e2e8f0; }
+
+        /* Modal simple for change pass */
+        #passModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; }
+        .modal-content { background: white; padding: 30px; border-radius: 20px; width: 400px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 0.875rem; margin-bottom: 5px; }
+        .input-group input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
+        .submit-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="stat-card">
+                <div class="stat-icon"><i data-lucide="eye"></i></div>
+                <div class="stat-info">
+                    <h3>Tài liệu đã truy cập</h3>
+                    <p><%= stats.views %></p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i data-lucide="download"></i></div>
+                <div class="stat-info">
+                    <h3>Tài liệu đã tải về</h3>
+                    <p><%= stats.downloads %></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-card">
+            <div class="card-header">
+                <h2 style="margin: 0; font-size: 1.5rem;">Cài đặt tài khoản</h2>
+                <p style="margin: 5px 0 0; opacity: 0.8;">Quản lý thông tin cá nhân của bạn</p>
+            </div>
+            <div class="card-body">
+                <div class="field-group">
+                    <label>Họ và tên</label>
+                    <div class="value"><%= profileUser.full_name || 'Chưa cập nhật' %></div>
+                </div>
+                <div class="field-group">
+                    <label>Tên đăng nhập</label>
+                    <div class="value"><%= profileUser.username %></div>
+                </div>
+                <div class="field-group">
+                    <label>Email</label>
+                    <div class="value"><%= profileUser.email %></div>
+                </div>
+                <div class="field-group">
+                    <label>Ngày sinh</label>
+                    <div class="value"><%= profileUser.birthdate ? new Date(profileUser.birthdate).toLocaleDateString('vi-VN') : 'Chưa cập nhật' %></div>
+                </div>
+                <div class="field-group">
+                    <label>Lớp hiện tại</label>
+                    <div class="value"><%= profileUser.current_class || 'Chưa cập nhật' %></div>
+                </div>
+                <div class="field-group">
+                    <label>Vai trò</label>
+                    <div class="value"><%= profileUser.role === 'admin' ? 'Quản trị viên' : 'Thành viên' %></div>
+                </div>
+                
+                <button class="btn-change-pass" onclick="document.getElementById('passModal').style.display='flex'">
+                    <i data-lucide="key" style="width:16px; vertical-align: middle; margin-right: 5px;"></i> Đổi mật khẩu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="passModal">
+        <div class="modal-content">
+            <h3 style="margin-top:0">Đổi mật khẩu</h3>
+            <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 20px;">Hệ thống sẽ gửi mã OTP đến email của bạn để xác thực.</p>
+            <div class="input-group">
+                <label>Mật khẩu mới</label>
+                <input type="password" id="newPass" placeholder="••••••••">
+            </div>
+            <div class="input-group">
+                <label>Mã OTP (Nhập 123456)</label>
+                <input type="text" id="otpCode" placeholder="6 chữ số">
+            </div>
+            <button class="submit-btn" onclick="changePass()">Xác nhận đổi mật khẩu</button>
+            <button class="btn-change-pass" style="width:100%; border:none; margin-top:10px" onclick="document.getElementById('passModal').style.display='none'">Hủy</button>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        async function changePass() {
+            const newPassword = document.getElementById('newPass').value;
+            const otp = document.getElementById('otpCode').value;
+            
+            const res = await fetch('/change-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: '<%= profileUser.email %>', newPassword, otp })
+            });
+            const data = await res.json();
+            alert(data.message);
+            if (data.success) location.reload();
+        }
+    </script>
+</body>
+</html>

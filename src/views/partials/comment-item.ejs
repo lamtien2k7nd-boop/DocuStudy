@@ -1,0 +1,16 @@
+<div class="comment-item" id="comment-<%= comment.id %>">
+  <div class="comment-item-header">
+    <div class="comment-item-avatar">
+      <img src="<%= comment.userAvatar || '/images/default-avatar.png' %>" alt="Avatar">
+    </div>
+    <span class="comment-item-author"><%= comment.userName || 'Người dùng ẩn danh' %></span>
+    <span class="comment-item-time"><%= comment.createdAt %></span>
+  </div>
+  <p class="comment-item-text"><%= comment.content %></p>
+  <div class="comment-item-footer">
+    <!-- Nút trả lời hoặc link đến cộng đồng -->
+    <a href="/congdong?doc_id=<%= comment.documentId %>#comment-<%= comment.id %>" class="comment-link">
+      <i data-lucide="message-circle"></i> Trả lời
+    </a>
+  </div>
+</div>

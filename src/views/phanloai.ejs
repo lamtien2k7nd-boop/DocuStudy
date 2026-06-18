@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài liệu miễn phí</title>
+    <link rel="stylesheet" href="/css/basev2.css">
+    <link rel="stylesheet" href="/css/phan_loai_v2.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head> 
+<body class="custom-body">
+    <%- include('partials/header') %>
+
+    <main>
+        <div class="cate-title">Kho tài liệu</div>
+        <div class="cate-description">
+            <p>Khám phá bộ sưu tập tài liệu phong phú và đa dạng</p>
+        </div>
+
+        <div class="cate-content">
+            <!-- 1. Danh sách các danh mục (categories) -->
+            <% if (typeof categories !== 'undefined' && categories && categories.length) { %>
+                <% categories.forEach(category => { %>
+                    <section class="<%= category.sectionClass %>">
+                        <h2 class="cate-section-title"><%= category.title %></h2>
+                        
+                        <% if (category.subcategories && category.subcategories.length) { %>
+                            <!-- Nếu có nhiều subcategory (dạng grid) -->
+                            <% if (category.subcategories.length > 1) { %>
+                                <div class="section-container">
+                                    <% category.subcategories.forEach(sub => { %>
+                                        <a href="<%= sub.link %>">
+                                            <div class="section-card" id="<%= sub.id %>">
+                                                <div class="section-title"><%= sub.name %></div>
+                                            </div>
+                                        </a>
+                                    <% }); %>
+                                </div>
+                            <% } else { %>
+                                <!-- Nếu chỉ có 1 subcategory (ví dụ SPT, THPT) thì không cần container grid -->
+                                <% const sub = category.subcategories[0]; %>
+                                <a href="<%= sub.link %>">
+                                    <div class="section-card" id="<%= sub.id %>">
+                                        <div class="section-title"><%= sub.name %></div>
+                                    </div>
+                                </a>
+                            <% } %>
+                        <% } %>
+                    </section>
+                <% }); %>
+            <% } else { %>
+                <!-- Fallback khi chưa có dữ liệu, có thể hiển thị loading hoặc để trống -->
+                <p>Đang cập nhật dữ liệu...</p>
+            <% } %>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+    <script src="/js/trang_chu.js"></script>
+</body>
+</html>

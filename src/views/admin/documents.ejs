@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý tài liệu - Admin</title>
+    <link rel="stylesheet" href="/css/basev2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --sidebar-width: 260px;
+            --primary: #6366f1;
+            --primary-light: #e0e7ff;
+            --bg-body: #f8fafc;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
+            margin: 0;
+            display: flex;
+        }
+
+        /* Sidebar similar to dashboard */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: #ffffff;
+            height: 100vh;
+            border-right: 1px solid #e2e8f0;
+            position: fixed;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo { font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 2rem; display: flex; align-items: center; gap: 0.75rem; }
+        .nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; color: #64748b; text-decoration: none; border-radius: 0.5rem; transition: all 0.2s; margin-bottom: 0.5rem; }
+        .nav-link:hover, .nav-link.active { background: #f1f5f9; color: var(--primary); }
+
+        .main-content { margin-left: var(--sidebar-width); flex: 1; padding: 2rem; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+
+        /* Filter Section */
+        .filters {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        }
+
+        .filters select, .filters input {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        /* Document Groups */
+        .sub-cate-group {
+            margin-bottom: 2.5rem;
+        }
+
+        .sub-cate-group h2 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #475569;
+            border-left: 4px solid var(--primary);
+            padding-left: 0.75rem;
+        }
+
+        .doc-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1rem;
+        }
+
+        .doc-card {
+            background: white;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+            border: 1px solid #f1f5f9;
+            transition: all 0.2s ease;
+        }
+        .doc-card:hover {
+            box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+        }
+
+        .doc-card h3 {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .doc-card .meta {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Tag display in doc card */
+        .doc-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.375rem;
+            margin-bottom: 0.75rem;
+        }
+        .doc-tag-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.2rem 0.5rem;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 9999px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+        }
+        .doc-tag-chip .tag-topic {
+            color: #8b5cf6;
+            font-weight: 700;
+        }
+        .doc-tag-chip .tag-sep {
+            color: #c7d2fe;
+        }
+        .no-tags {
+            font-size: 0.6875rem;
+            color: #cbd5e1;
+            font-style: italic;
+            margin-bottom: 0.75rem;
+        }
+
+        .doc-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.75rem;
+            border-radius: 0.4rem;
+            cursor: pointer;
+            border: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: all 0.2s;
+        }
+
+        .btn-danger { background: #fee2e2; color: #ef4444; }
+        .btn-danger:hover { background: #fecaca; }
+        .btn-primary { background: #e0e7ff; color: #4f46e5; }
+        .btn-primary:hover { background: #c7d2fe; }
+
+        /* Modal simple */
+        #addTagModal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            align-items: center; justify-content: center;
+        }
+
+        .modal-content {
+            background: white; padding: 2rem; border-radius: 1rem; width: 420px;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        }
+        .modal-content h3 {
+            font-size: 1.0625rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: #1e293b;
+        }
+        .modal-content label {
+            display: block;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 0.375rem;
+        }
+        .modal-content input[type="text"] {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .modal-content input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo"><i data-lucide="layout-dashboard"></i> DS Admin</div>
+        <nav>
+            <a href="/admin/dashboard" class="nav-link"><i data-lucide="home"></i> Dashboard</a>
+            <a href="/admin/documents" class="nav-link active"><i data-lucide="file-text"></i> Tài liệu</a>
+            <a href="/admin/tags" class="nav-link"><i data-lucide="tag"></i> Quản lý Tag</a>
+            <a href="/admin/logout" class="nav-link"><i data-lucide="log-out"></i> Đăng xuất</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="header">
+            <h1>Quản lý tài liệu</h1>
+        </header>
+
+        <section class="filters">
+            <form action="/admin/documents" method="GET" style="display:flex; gap:10px;">
+                <select name="sub_cate">
+                    <option value="">Tất cả Sub-Category</option>
+                    <% subcategories.forEach(sub => { %>
+                        <option value="<%= sub.target_id %>" <%= subCate === sub.target_id ? 'selected' : '' %>><%= sub.name %></option>
+                    <% }) %>
+                </select>
+                <input type="text" name="tag" placeholder="Lọc theo Tag..." value="<%= tagFilter %>">
+                <button type="submit" class="btn btn-primary" style="padding: 0 1rem; border-radius: 0.5rem;">Lọc</button>
+            </form>
+        </section>
+
+        <% Object.keys(groupedDocs).forEach(subCateName => { %>
+            <div class="sub-cate-group">
+                <h2><%= subCateName %></h2>
+                <div class="doc-list">
+                    <% groupedDocs[subCateName].forEach(doc => { %>
+                        <div class="doc-card">
+                            <h3><%= doc.title %></h3>
+                            <div class="meta">
+                                <span>ID: <%= doc.id %></span> | 
+                                <span>View: <%= doc.view_count %></span> | 
+                                <span>Download: <%= doc.download_count %></span>
+                            </div>
+
+                            <!-- Hiển thị tag hiện tại của tài liệu -->
+                            <% if (doc.tags && doc.tags.length > 0) { %>
+                                <div class="doc-tags">
+                                    <% doc.tags.forEach(tag => { %>
+                                        <div class="doc-tag-group">
+                                            <span class="doc-tag-chip">
+                                                <span class="tag-topic"><%= tag.topic_title %></span>
+                                                <span class="tag-sep">›</span>
+                                                <%= tag.tag_content %>
+                                            </span>
+                                            <form action="/admin/tags/item/<%= tag.tag_id %>/delete" method="POST" style="display:inline;" onsubmit="return confirm('Xóa tag này?')">
+                                                <button type="submit" class="tag-mini-del" title="Xóa tag">
+                                                    <i data-lucide="x" style="width:10px;"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    <% }); %>
+                                </div>
+                            <% } else { %>
+                                <p class="no-tags"><i data-lucide="tag" style="width:10px;display:inline;"></i> Chưa có tag</p>
+                            <% } %>
+
+                            <div class="doc-actions">
+                                <button class="btn btn-primary tag-trigger" 
+                                        data-id="<%= doc.id %>" 
+                                        data-title="<%= doc.title %>">
+                                    <i data-lucide="plus-circle" style="width:14px;"></i> Thêm Tag
+                                </button>
+                                <form action="/admin/documents/<%= doc.id %>/delete" method="POST" onsubmit="return confirm('Xóa tài liệu này?')">
+                                    <button type="submit" class="btn btn-danger">
+                                        <i data-lucide="trash-2" style="width:14px;"></i> Xóa
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+        <% }) %>
+    </main>
+
+    <style>
+        .doc-tag-group {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 4px;
+            margin-bottom: 4px;
+        }
+        .tag-mini-del {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffe2e2;
+            color: #ef4444;
+            border: none;
+            cursor: pointer;
+            margin-left: -8px;
+            z-index: 2;
+            opacity: 0;
+            transition: all 0.2s;
+            padding: 0;
+        }
+        .doc-tag-group:hover .tag-mini-del {
+            opacity: 1;
+        }
+        .tag-mini-del:hover {
+            background: #ef4444;
+            color: #fff;
+        }
+    </style>
+
+    <!-- Modal thêm tag -->
+    <div id="addTagModal">
+        <div class="modal-content">
+            <h3 id="modalTitle">Thêm Tag cho tài liệu</h3>
+            <form action="/admin/documents/add-tag" method="POST">
+                <input type="hidden" name="document_id" id="modalDocId">
+                <div style="margin: 1rem 0;">
+                    <label>Phân loại lớn (Topic)</label>
+                    <input type="text" name="topic_title" required placeholder="VD: Cấu trúc đề, Kiến thức trọng tâm..." style="margin-bottom:0.75rem;">
+                </div>
+                <div style="margin: 1rem 0;">
+                    <label>Tag cụ thể (Item)</label>
+                    <input type="text" name="content" required placeholder="VD: Hàm số, Nguyên hàm, Part 1...">
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:1.5rem;">
+                    <button type="button" class="btn" onclick="closeModal()" style="background:#f1f5f9; color:#64748b;">Hủy bỏ</button>
+                    <button type="submit" class="btn btn-primary" style="padding:0.6rem 1.5rem; background: var(--primary); color: #fff;">Lưu thông tin</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        document.querySelectorAll('.tag-trigger').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-id');
+                const title = btn.getAttribute('data-title');
+                openAddTagModal(id, title);
+            });
+        });
+
+        function openAddTagModal(id, title) {
+            document.getElementById('modalDocId').value = id;
+            document.getElementById('modalTitle').innerText = 'Thêm Tag: ' + title;
+            document.getElementById('addTagModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('addTagModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

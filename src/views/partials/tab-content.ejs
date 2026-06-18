@@ -1,0 +1,24 @@
+<!-- Tab Content Wrapper Component -->
+<% const { tabData } = locals; %>
+
+<% tabData.pages.forEach((page, pageIdx) => { %>
+  <div class="card-page <%= pageIdx === 0 ? 'active' : '' %>">
+    <% page.cards.forEach(card => { %>
+      <%- include('card.ejs', { card: card }) %>
+    <% }); %>
+  </div>
+<% }); %>
+
+<div class="view-more-page">
+  <div class="view-more-content">
+    <p class="view-more-text">Bạn muốn xem thêm đề?</p>
+    <i data-lucide="chevron-down" class="view-more-arrow"></i>
+  </div>
+</div>
+
+<div class="view-all-wrapper">
+  <button class="view-all-btn">
+    Xem tất cả <%= tabData.label %>
+    <i data-lucide="chevron-right"></i>
+  </button>
+</div>

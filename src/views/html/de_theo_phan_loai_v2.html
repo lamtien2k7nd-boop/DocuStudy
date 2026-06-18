@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài liệu miễn phí</title>
+    <link rel="stylesheet" href="/src/public/css/basev2.css">
+    <link rel="stylesheet" href="/src/public/css/de_theo_phan_loai.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="custom-body">
+    <header class="custom-header">
+        <div class="header-container">
+            <div class="logo-wrapper">
+                <div class="icon-box">
+                    <i data-lucide="library" class="icon-white"></i>
+                </div>
+                <span class="logo-text">
+                    Docu<span class="logo-highlight">Study.</span>
+                </span>
+            </div>
+
+            <nav class="main-nav">
+                <a href="/" class="nav-link ">Trang chủ<span class="nav-underline"></span></a>
+                <a href="phanloai" class="nav-link active">Tài liệu<span class="nav-underline"></span></a>
+                <!-- <a href="#" class="nav-link">Luyện thi<span class="nav-underline"></span></a> -->
+                <a href="congdong" class="nav-link">Cộng đồng<span class="nav-underline"></span></a>
+            </nav>
+
+            <div class="auth-wrapper">
+                <button class="login-btn" onclick="openModal()">
+                    <i data-lucide="user" class="icon-small"></i>
+                    <span>Đăng nhập</span>
+                </button>
+                <button class="menu-btn">
+                    <i data-lucide="menu" class="icon-menu"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="hero-section">
+            <div class="hero-container">
+                <div class="link-steps">
+                    <a href="phanloai" class="link">Kho tài liệu</a>
+                    <i data-lucide="chevron-right" class="link-icon"></i>
+                    <a href="detheophanloai" class="link">Đề thi định lượng</a>
+                </div>
+                <div class="title">
+                    <div class="folder-logo"><i data-lucide="folder" class="folder-icon"></i></div>
+                    <div class="title-text">
+                        <h1>Đề thi định lượng</h1>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <i data-lucide="file-text" class="stat-icon"></i>
+                                <span class="stat-text">120 tài liệu</span>
+                            </div>
+                            <div class="stat-item">
+                                <i data-lucide="users" class="stat-icon"></i>
+                                <span class="stat-text">5.000 lượt truy cập</span>
+                            </div>
+                            <div class="stat-item">
+                                <i data-lucide="star" class="stat-icon"></i>
+                                <span class="stat-text">4.8/5 sao</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <div class="left-tab">
+                        <div class="tab-item follow">
+                            <i data-lucide="heart" class="follow-icon"></i>
+                            <span>Theo dõi</span>
+                        </div>
+                        <div class="tab-item share">
+                            <i data-lucide="share-2" class="share-icon"></i>
+                            <span>Chia sẻ</span>
+                        </div>
+                        <div class="tab-item rate">
+                            <i data-lucide="star" class="rate-icon"></i>
+                            <span>Đánh giá</span>
+                        </div>
+                    </div>
+                    <div class="right-tab">
+                        <div class="search-bar">
+                            <input type="text" class="search-input" placeholder="Tìm kiếm tài liệu..." />
+                            <button class="search-btn">
+                                <i data-lucide="search" class="search-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="trending-section">
+            <div class="top-wrapper">
+                <div class="title">Trending</div>
+                <div class="carousel-btns">
+                    <button class="carousel-btn prev" style="display: none;"><i data-lucide="chevron-left"></i></button>
+                    <button class="carousel-btn next"><i data-lucide="chevron-right"></i></button>
+                </div>
+            </div>
+            <div class="trending-items carousel-container">
+                <!-- Card 1 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">HSA 2026</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="chitietde">Đề thi Định lượng HSA 2026 Đề số 1</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 8.4k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">HSA 2026</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="#">Đề thi Định lượng HSA 2026 Đề số 2</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 5.2k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">TSA 2026</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="#">Đề thi Định lượng HSA 2026 Đề số 3</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 3.1k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1517673132405-a56a62b18caf?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">TSA 2026</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="#">Đề thi Định lượng HSA 2026 Đề số 4</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 2.7k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 5 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">ĐGNL</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="#">Đề thi Định lượng HSA 2026 Đề số 5</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 9.8k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 6 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1543004218-ee141104e12e?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">ĐGNL</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="#">Đề thi Định lượng HSA 2026 Đề số 6</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 6.3k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="favourite-section">
+            <div class="top-wrapper">
+                <div class="title">Được yêu thích nhiều</div>
+                <div class="carousel-btns">
+                    <button class="carousel-btn prev" style="display: none;"><i data-lucide="chevron-left"></i></button>
+                    <button class="carousel-btn next"><i data-lucide="chevron-right"></i></button>
+                </div>
+            </div>
+            <div class="favourite-items carousel-container">
+                <!-- Card 1 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">HSA 2026</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="#">Đề thi Định lượng HSA 2026 Đề số 1</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 8.4k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">HSA 2026</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="#">Đề thi Định lượng HSA 2026 Đề số 2</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 5.2k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">TSA 2026</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="#">Đề thi Định lượng HSA 2026 Đề số 3</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 3.1k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1517673132405-a56a62b18caf?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">TSA 2026</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="#">Đề thi Định lượng HSA 2026 Đề số 4</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 2.7k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 5 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">ĐGNL</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="#">Đề thi Định lượng HSA 2026 Đề số 5</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 9.8k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 6 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1543004218-ee141104e12e?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">ĐGNL</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="#">Đề thi Định lượng HSA 2026 Đề số 6</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 6.3k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="all-section">
+            <div class="top-wrapper">
+                <div class="title">Tất cả đề thi</div>
+                <div class="carousel-btns pagination-btns">
+                    <button class="carousel-btn prev-page" disabled><i data-lucide="chevron-left"></i></button>
+                    <!-- Pagination dots will be appended here -->
+                    <button class="carousel-btn next-page"><i data-lucide="chevron-right"></i></button>
+                </div>
+            </div>
+            <div class="items">
+                <!-- Card 1 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">Mới cập nhật</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="#">Đề thi Định lượng HSA 2026 Đề số 1</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 8.4k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">Mới cập nhật</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="#">Đề thi Định lượng HSA 2026 Đề số 2</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 5.2k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">Phổ biến</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="#">Đề thi Định lượng HSA 2026 Đề số 3</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 3.1k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1517673132405-a56a62b18caf?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">Phổ biến</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="#">Đề thi Định lượng HSA 2026 Đề số 4</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 2.7k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 5 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">Top lượt tải</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="#">Đề thi Định lượng HSA 2026 Đề số 5</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 9.8k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 6 -->
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1543004218-ee141104e12e?w=400" alt="Cover" />
+                        <div class="card-overlay"></div>
+                        <div class="card-badge">Top lượt tải</div>
+                        <div class="card-download-icon"><i data-lucide="download"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="#">Đề thi Định lượng HSA 2026 Đề số 6</a></h3>
+                        <div class="card-footer">
+                            <span><i data-lucide="download"></i> 6.3k</span>
+                            <span class="card-download-link">Tải ngay <i data-lucide="chevron-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="custom-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col footer-col-main">
+                    <div class="footer-logo-wrapper">
+                        <div class="footer-icon-box">
+                            <i data-lucide="library" class="footer-icon"></i>
+                        </div>
+                        <span class="footer-logo-text">
+                            Docu<span class="footer-logo-highlight">Study.</span>
+                        </span>
+                    </div>
+                    <p class="footer-description">
+                        Nền tảng chia sẻ tài liệu giáo dục hàng đầu Việt Nam. Tối giản trong thiết kế, tối ưu trong trải
+                        nghiệm học tập.
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4 class="footer-title">Hệ sinh thái</h4>
+                    <ul class="footer-list">
+                        <li><a href="#" class="footer-link">Đề thi HSA/TSA</a></li>
+                        <li><a href="#" class="footer-link">Tài liệu THPT</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4 class="footer-title">Hỗ trợ & Pháp lý</h4>
+                    <ul class="footer-list">
+                        <li><a href="#" class="footer-link">Điều khoản sử dụng</a></li>
+                        <li><a href="#" class="footer-link">Chính sách bảo mật</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2026 DOCUSTUDY PLATFORM. MADE WITH PASSION FOR EDUCATION.
+                </p>
+                <div class="footer-cookies">
+                    <a href="#">privacy</a>
+                    <a href="#">cookies</a>
+                    <a href="#">security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="overlay" id="overlay">
+        <div class="modal" id="mainModal">
+            <button class="back-btn" id="back-btn" onclick="switchView('view-general')">← Quay lại</button>
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+
+            <div class="view" id="view-general">
+                <div class="v1-left">
+                    <h2>Chào mừng bạn!</h2>
+                    <button class="btn-large primary" onclick="switchView('view-login')">Đăng nhập</button>
+                    <button class="btn-large" onclick="switchView('view-register')">Đăng ký</button>
+                </div>
+                <div class="v1-right">
+                    <div class="methods-grid">
+                        <button class="method-btn"><i data-lucide="user"></i> Khách</button>
+                        <button class="method-btn"><i data-lucide="mail"></i> Google</button>
+                        <button class="method-btn"><i data-lucide="smartphone"></i> Facebook</button>
+                        <button class="method-btn"><i data-lucide="github"></i> GitHub</button>
+                        <div class="guest-inputs" id="guest-form">
+                            <input type="text" placeholder="Tên hiển thị" />
+                            <input type="email" placeholder="Email (nếu có)" />
+                            <button
+                                style="margin-top: 10px; padding: 8px; background: #f97316; color: white; border: none; border-radius: 8px;">Vào
+                                nhanh</button>
+                        </div>
+                    </div>
+                    <div class="dev-links">
+                        <p>Hoặc đăng nhập bằng</p>
+                        <div class="social-icons">
+                            <a href="#"><i data-lucide="mail"></i></a>
+                            <a href="#"><i data-lucide="facebook"></i></a>
+                            <a href="#"><i data-lucide="github"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="view form-view" id="view-login">
+                <div class="header-graphic"></div>
+                <h2 class="form-title">Đăng nhập</h2>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="example@mail.com" />
+                </div>
+                <div class="input-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" placeholder="••••••••" />
+                </div>
+                <div class="form-options">
+                    <label><input type="checkbox" /> Ghi nhớ</label>
+                    <a href="#">Quên mật khẩu?</a>
+                </div>
+                <button class="submit-btn">Đăng nhập</button>
+                <p class="toggle-form-text">Chưa có tài khoản? <span onclick="switchView('view-register')">Đăng
+                        ký</span></p>
+            </div>
+
+            <div class="view form-view" id="view-register">
+                <div class="header-graphic"></div>
+                <h2 class="form-title">Đăng ký</h2>
+                <div class="input-group">
+                    <label>Họ và tên</label>
+                    <input type="text" placeholder="Nguyễn Văn A" />
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="example@mail.com" />
+                </div>
+                <div class="input-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" placeholder="••••••••" />
+                </div>
+                <button class="submit-btn">Tạo tài khoản</button>
+                <p class="toggle-form-text">Đã có tài khoản? <span onclick="switchView('view-login')">Đăng nhập</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/src/public/js/homev2.js"></script>
+    <script src="/src/public/js/detheophanloai.js"></script>
+</body>
+
+</html>

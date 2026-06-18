@@ -1,0 +1,26 @@
+<!-- Card Component -->
+<div class="card">
+  <div class="card-image">
+    <img src="<%= card.image %>" alt="Cover" />
+    <div class="card-overlay"></div>
+    <div class="card-badge"><%= card.badge %></div>
+    <div class="card-download-icon">
+      <i data-lucide="download"></i>
+    </div>
+  </div>
+  <div class="card-body">
+    <h3 class="card-title">
+      <% if (card.link) { %>
+        <a href="<%= card.link %>"><%= card.title %></a>
+      <% } else { %>
+        <%= card.title %>
+      <% } %>
+    </h3>
+    <div class="card-footer">
+      <span><i data-lucide="download"></i> <%= card.downloadCount %>k</span>
+      <span class="card-download-link">
+        Tải ngay <i data-lucide="chevron-right"></i>
+      </span>
+    </div>
+  </div>
+</div>

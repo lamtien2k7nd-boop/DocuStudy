@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title || 'DocuStudy - Cộng đồng' %></title>
+    <link rel="stylesheet" href="/css/basev2.css">
+    <link rel="stylesheet" href="/css/cong_dong.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="custom-body">
+    <%- include('partials/header') %>
+
+    <main>
+        <!-- Phần đăng bài mới -->
+        <section class="new-post-section">
+            <div class="new-post-container">
+                <div class="new-post-header">
+                    <h2 class="section-title"><%= newPost.title || 'Bài viết mới' %></h2>
+                    <p class="section-subtitle"><%= newPost.subtitle || 'Chia sẻ kiến thức và kinh nghiệm với cộng đồng' %></p>
+                </div>
+                
+                <!-- Hiển thị thông báo -->
+                <% if (successMessage) { %>
+                    <div class="alert alert-success"><%= successMessage %></div>
+                <% } %>
+                <% if (errorMessage) { %>
+                    <div class="alert alert-error"><%= errorMessage %></div>
+                <% } %>
+                
+                <!-- Form đăng bài -->
+                <form id="postForm" class="new-post-form">
+                    <div class="new-post-content">
+                        <!-- Nếu chưa đăng nhập, hiển thị thông báo -->
+                        <% if (!isLoggedIn) { %>
+                            <div class="login-required">
+                                <p><i data-lucide="lock"></i> Vui lòng <a href="#" onclick="openModal()">đăng nhập</a> để đăng bài viết.</p>
+                            </div>
+                        <% } else { %>
+                            <!-- Nếu đã đăng nhập, hiển thị form -->
+                            <div class="new-post-user">
+                                <div class="user-avatar-small">
+                                    <img src="<%= currentUserAvatar %>" alt="Avatar">
+                                </div>
+                                <span class="user-name-display"><%= currentUserName %></span>
+                            </div>
+                            <div class="new-post-title">
+                                <input type="text" id="postTitle" placeholder="Tiêu đề bài viết *" required class="new-post-input-field">
+                            </div>
+                            <div class="new-post-body">
+                                <textarea id="postContent" placeholder="<%= newPost.placeholder || 'Bạn đang nghĩ gì? Hãy chia sẻ với mọi người!' %>" required class="new-post-textarea" rows="4"></textarea>
+                            </div>
+                            <div class="new-post-tools">
+                                <button type="submit" class="new-post-button"><%= newPost.buttonText || 'Đăng bài' %></button>
+                            </div>
+                        <% } %>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Danh sách bài viết và bình luận -->
+        <section class="community-content">
+            <div class="container">
+                <div class="community-grid">
+                    <!-- Cột trái: Bài viết -->
+                    <div class="community-posts">
+                        <h2 class="section-title">Bài viết mới nhất</h2>
+                        
+                        <!-- Bài viết ghim -->
+                        <% if (pinnedPosts && pinnedPosts.length) { %>
+                            <div class="pinned-posts">
+                                <h3 class="pinned-title"><i data-lucide="pin"></i> Bài viết nổi bật</h3>
+                                <% pinnedPosts.forEach(post => { %>
+                                    <div class="post-item pinned">
+                                        <div class="post-item-header">
+                                            <div class="post-item-avatar">
+                                                <img src="<%= post.authorAvatar %>" alt="Avatar">
+                                            </div>
+                                            <span class="post-item-author"><%= post.authorName %></span>
+                                            <span class="pinned-badge">Ghim</span>
+                                            <span class="post-item-time"><%= post.createdAt %></span>
+                                        </div>
+                                        <h3 class="post-item-title"><a href="<%= post.link %>"><%= post.title %></a></h3>
+                                        <p class="post-item-content"><%= post.content %></p>
+                                        <div class="post-item-footer">
+                                            <a href="<%= post.link %>" class="post-read-more">Đọc thêm →</a>
+                                        </div>
+                                    </div>
+                                <% }); %>
+                            </div>
+                        <% } %>
+
+                        <!-- Bài viết thường -->
+                        <div class="post-list">
+                            <% if (posts && posts.length) { %>
+                                <% posts.forEach(post => { %>
+                                    <div class="post-item">
+                                        <div class="post-item-header">
+                                            <div class="post-item-avatar">
+                                                <img src="<%= post.authorAvatar %>" alt="Avatar">
+                                            </div>
+                                            <span class="post-item-author"><%= post.authorName %></span>
+                                            <span class="post-item-time"><%= post.createdAt %></span>
+                                        </div>
+                                        <h3 class="post-item-title"><a href="<%= post.link %>"><%= post.title %></a></h3>
+                                        <p class="post-item-content"><%= post.content %></p>
+                                        <div class="post-item-footer">
+                                            <span><i data-lucide="eye"></i> <%= post.viewCount %> lượt xem</span>
+                                            <a href="<%= post.link %>" class="post-read-more">Đọc thêm →</a>
+                                        </div>
+                                    </div>
+                                <% }); %>
+                            <% } else { %>
+                                <p class="empty-message">Chưa có bài viết nào. Hãy là người đầu tiên chia sẻ!</p>
+                            <% } %>
+                        </div>
+
+                        <!-- Phân trang -->
+                        <% if (totalPages > 1) { %>
+                            <div class="pagination">
+                                <% for (let i = 1; i <= totalPages; i++) { %>
+                                    <a href="/congdong?page=<%= i %>" class="page-link <%= i === currentPage ? 'active' : '' %>">
+                                        <%= i %>
+                                    </a>
+                                <% } %>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <!-- Cột phải: Bình luận mới nhất từ tài liệu -->
+                    <div class="community-sidebar">
+                        <div class="recent-comments">
+                            <h3 class="sidebar-title"><i data-lucide="message-circle"></i> Bình luận mới nhất</h3>
+                            <% if (recentComments && recentComments.length) { %>
+                                <% recentComments.forEach(comment => { %>
+                                    <div class="comment-item">
+                                        <div class="comment-item-header">
+                                            <div class="comment-item-avatar">
+                                                <img src="<%= comment.userAvatar %>" alt="Avatar">
+                                            </div>
+                                            <span class="comment-item-author"><%= comment.userName %></span>
+                                            <span class="comment-item-time"><%= comment.createdAt %></span>
+                                        </div>
+                                        <p class="comment-item-text"><%= truncateText(comment.commentText, 100) %></p>
+                                        <div class="comment-item-doc">
+                                            <a href="<%= comment.documentLink %>">Trong tài liệu: <%= comment.documentTitle %></a>
+                                        </div>
+                                    </div>
+                                <% }); %>
+                            <% } else { %>
+                                <p class="empty-message">Chưa có bình luận nào.</p>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tin tức & Sự kiện (tái sử dụng cấu trúc từ trang chủ, có thể dùng partial nếu muốn) -->
+        <section class="news-section">
+            <div class="container">
+                <div class="news-header">
+                    <h2 class="section-title">Tin tức & Sự kiện</h2>
+                    <p class="news-subtitle">Cập nhật mới nhất về kỳ thi, tài liệu và hoạt động của DocuStudy</p>
+                </div>
+
+                <div class="news-grid">
+                    <!-- Bài viết nổi bật bên trái -->
+                    <% if (featuredNews) { %>
+                    <div class="news-main">
+                        <div class="news-main-image">
+                            <img src="<%= featuredNews.image %>" alt="Tin tức nổi bật" />
+                        </div>
+                        <div class="news-main-content">
+                            <span class="news-badge">Mới nhất</span>
+                            <h3 class="news-main-title"><%= featuredNews.title %></h3>
+                            <p class="news-main-desc"><%= featuredNews.description %></p>
+                            <div class="news-main-footer">
+                                <span><i data-lucide="calendar"></i> <%= featuredNews.date %></span>
+                                <a href="<%= featuredNews.link %>" class="news-read-more">Đọc thêm <i data-lucide="chevron-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+
+                    <!-- Danh sách bài viết bên phải -->
+                    <div class="news-side">
+                        <% if (newsList && newsList.length) { %>
+                            <% newsList.forEach(item => { %>
+                                <a href="<%= item.link %>" class="news-item">
+                                    <div class="news-item-image">
+                                        <img src="<%= item.image %>" alt="Thumb" />
+                                    </div>
+                                    <div class="news-item-body">
+                                        <h4 class="news-item-title"><%= item.title %></h4>
+                                        <span class="news-item-date"><%= item.date %></span>
+                                    </div>
+                                </a>
+                            <% }); %>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA SECTION -->
+        <section class="cta-section">
+            <div class="cta-container">
+                <div class="cta-content">
+                    <h2 class="cta-title">
+                        Bạn có tài liệu hay? <br />
+                        <span class="cta-highlight">Chia sẻ ngay</span> cùng cộng đồng.
+                    </h2>
+                    <p class="cta-description">
+                        Mỗi tài liệu bạn đóng góp đều giúp ích cho hàng ngàn học sinh khác trên khắp cả nước. Tham gia cùng chúng tôi ngay hôm nay!
+                    </p>
+                    <div class="cta-buttons">
+                        <button class="cta-btn-primary">Đăng tải tài liệu</button>
+                        <button class="cta-btn-secondary">Tìm hiểu thêm</button>
+                    </div>
+                </div>
+                <div class="cta-bg-effect cta-bg-orange"></div>
+                <div class="cta-bg-effect cta-bg-blue"></div>
+            </div>
+        </section>
+    </main>
+
+    <%- include('partials/footer') %>
+
+    <script src="/js/trang_chu.js"></script>
+    <script src="/js/cong_dong.js"></script>
+</body>
+
+</html>

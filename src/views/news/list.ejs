@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title || 'Tin tức - DocuStudy' %></title>
+    <link rel="stylesheet" href="/css/basev2.css">
+    <link rel="stylesheet" href="/css/news.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="custom-body">
+    <%- include('../partials/header') %>
+
+    <main>
+        <section class="news-page">
+            <div class="container">
+                <div class="news-page-header">
+                    <h1 class="page-title">Tin tức & Sự kiện</h1>
+                    <p class="page-subtitle">Cập nhật những thông tin mới nhất từ DocuStudy</p>
+                </div>
+
+                <div class="news-grid">
+                    <% if (newsList && newsList.length > 0) { %>
+                        <% newsList.forEach(item => { %>
+                            <a href="<%= item.link %>" class="news-card">
+                                <div class="news-card-image">
+                                    <img src="<%= item.image %>" alt="<%= item.title %>">
+                                    <% if (item.isFeatured) { %>
+                                        <span class="news-badge">Nổi bật</span>
+                                    <% } %>
+                                </div>
+                                <div class="news-card-body">
+                                    <h3 class="news-card-title"><%= item.title %></h3>
+                                    <p class="news-card-desc"><%= item.description %></p>
+                                    <div class="news-card-footer">
+                                        <span><i data-lucide="calendar"></i> <%= item.date %></span>
+                                        <span class="read-more">Đọc tiếp →</span>
+                                    </div>
+                                </div>
+                            </a>
+                        <% }); %>
+                    <% } else { %>
+                        <p class="empty-message">Chưa có tin tức nào.</p>
+                    <% } %>
+                </div>
+
+                <!-- Phân trang -->
+                <% if (totalPages > 1) { %>
+                    <div class="pagination">
+                        <% for (let i = 1; i <= totalPages; i++) { %>
+                            <a href="/tin-tuc?page=<%= i %>" class="page-link <%= i === currentPage ? 'active' : '' %>">
+                                <%= i %>
+                            </a>
+                        <% } %>
+                    </div>
+                <% } %>
+            </div>
+        </section>
+    </main>
+
+    <%- include('../partials/footer') %>
+    <script src="/js/trang_chu.js"></script>
+</body>
+</html>

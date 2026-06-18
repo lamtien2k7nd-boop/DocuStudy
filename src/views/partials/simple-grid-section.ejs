@@ -1,0 +1,24 @@
+<!-- Simple Grid Section Component -->
+<% const { section, cards } = locals; %>
+
+<section class="<%= section.wrapperClass %>">
+  <div class="container">
+    <div class="<%= section.wrapperClass %>-header" style="margin-bottom: 2rem;">
+      <h2 class="section-title"><%= section.title %></h2>
+      <p style="color: #64748b; font-weight: 500; margin-top: 0.5rem;">
+        <%= section.subtitle %>
+      </p>
+    </div>
+    <div class="card-grid" style="margin-bottom: 2rem;">
+      <% cards.forEach(card => { %>
+        <%- include('card.ejs', { card: card }) %>
+      <% }); %>
+    </div>
+    <div class="view-all-wrapper">
+      <button class="view-all-btn">
+        <%= section.btnText %>
+        <i data-lucide="chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</section>

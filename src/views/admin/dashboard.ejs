@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Admin</title>
+    <link rel="stylesheet" href="/css/basev2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --sidebar-width: 260px;
+            --primary: #6366f1;
+            --bg-body: #f8fafc;
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: #1e293b;
+            margin: 0;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: #ffffff;
+            height: 100vh;
+            border-right: 1px solid #e2e8f0;
+            position: fixed;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: #64748b;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: #f1f5f9;
+            color: var(--primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: #f1f5f9;
+            padding: 0.5rem 1rem 0.5rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: #1e293b;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid #f1f5f9;
+        }
+
+        .stat-card .label {
+            color: #64748b;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Lists Grid */
+        .data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .data-card {
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .data-card h2 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 0.75rem;
+            color: #64748b;
+            font-size: 0.875rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo">
+            <i data-lucide="layout-dashboard"></i>
+            DS Admin
+        </div>
+        <nav>
+            <a href="/admin/dashboard" class="nav-link active">
+                <i data-lucide="home"></i> Dashboard
+            </a>
+            <a href="/admin/documents" class="nav-link">
+                <i data-lucide="file-text"></i> Tài liệu
+            </a>
+            <a href="/admin/tags" class="nav-link">
+                <i data-lucide="tag"></i> Quản lý Tag
+            </a>
+            <a href="/admin/logout" class="nav-link" onclick="return confirm('Bạn có chắc muốn đăng xuất?')">
+                <i data-lucide="log-out"></i> Đăng xuất
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="header">
+            <h1>Tổng quan hệ thống</h1>
+            <div class="user-info">
+                <img src="<%= user?.avatar_url || '/images/default-avatar.png' %>" alt="Avatar" class="user-avatar">
+                <span><%= user?.full_name || user?.username || 'Admin' %></span>
+            </div>
+        </header>
+
+        <!-- Section 1: Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="label">Số lượt truy cập web</div>
+                <div class="value"><%= stats.visits || 0 %></div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Số người dùng</div>
+                <div class="value"><%= stats.users || 0 %></div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Số lượng tài liệu</div>
+                <div class="value"><%= stats.docs || 0 %></div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Số lượt tải về</div>
+                <div class="value"><%= stats.downloads || 0 %></div>
+            </div>
+        </div>
+
+        <!-- Section 2: Data Grids -->
+        <div class="data-grid">
+            <!-- Top Active Users -->
+            <div class="data-card">
+                <h2><i data-lucide="users"></i> Top Active User (Hoạt động)</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Người dùng</th>
+                            <th>Lượt bình luận/TT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (topUsers && topUsers.length > 0) { %>
+                            <% topUsers.forEach(user => { %>
+                                <tr>
+                                    <td><%= user.username %></td>
+                                    <td><%= user.activity_count %></td>
+                                </tr>
+                            <% }); %>
+                        <% } else { %>
+                            <tr><td colspan="2">Chưa có dữ liệu</td></tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Top Viewed Documents -->
+            <div class="data-card">
+                <h2><i data-lucide="file-text"></i> Top 5 Tài liệu truy cập nhiều</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên tài liệu</th>
+                            <th>Lượt xem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (topDocs && topDocs.length > 0) { %>
+                            <% topDocs.forEach(doc => { %>
+                                <tr>
+                                    <td><%= doc.title %></td>
+                                    <td><%= doc.view_count %></td>
+                                </tr>
+                            <% }); %>
+                        <% } else { %>
+                            <tr><td colspan="2">Chưa có dữ liệu</td></tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

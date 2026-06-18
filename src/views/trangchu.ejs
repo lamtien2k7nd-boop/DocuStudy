@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài liệu miễn phí</title>
+    <link rel="stylesheet" href="css/basev2.css">
+    <link rel="stylesheet" href="css/trang_chu_v2.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head> 
+<body class="custom-body">
+    <%-include('partials/header')%>
+    <main>
+        <!-- HERO SECTION (giữ nguyên - tĩnh) -->
+        <section class="hero-section">
+            <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                Nơi khởi đầu <br />
+                <span class="hero-highlight">tri thức</span> mới.
+                </h1>
+                <p class="hero-description">
+                Hệ thống chia sẻ tài liệu học tập tối giản, thông minh và hiệu quả dành riêng cho học sinh Việt Nam.
+                </p>
+                <div class="search-wrapper">
+                <div class="search-icon"><i data-lucide="search" class="search-icon-svg"></i></div>
+                <input type="text" class="search-input" placeholder="Tìm tên đề thi, tài liệu hoặc môn học..." />
+                <div class="search-btn-wrapper"><button class="search-btn">Tìm kiếm</button></div>
+                </div>
+                <div class="trending-wrapper">
+                <span class="trending-label">Xu hướng:</span>
+                <button class="trending-btn">ĐGNL 2026</button>
+                <button class="trending-btn">TSA Bách Khoa</button>
+                <button class="trending-btn">Toán 12</button>
+                </div>
+            </div>
+            <img src="img/hero.jpg" alt="hero-img" class="hero-image">
+            </div>
+        </section>
+
+            <!-- 1. Các kỳ thi có tabs (HSA, TSA, V-ACT) -->
+            <% if (examSections && examSections.length) { %>
+                <% examSections.forEach(section => { %>
+                <%- include('partials/exam-section.ejs', { section: section }) %>
+                <% }); %>
+            <% } %>
+
+            <!-- 2. Các grid đơn giản (SPT, THPTQG) -->
+            <% if (simpleGridSections && simpleGridSections.length && simpleGridCards && simpleGridCards.length) { %>
+                <% simpleGridSections.forEach((section, idx) => { %>
+                <%- include('partials/simple-grid-section.ejs', { 
+                    section: section, 
+                    cards: simpleGridCards[idx] 
+                }) %>
+                <% }); %>
+            <% } %>
+
+            <!-- 3. Các khối lớp 10, 11, 12 -->
+            <% if (gradeSections && gradeSections.length) { %>
+                <% gradeSections.forEach(gradeSec => { %>
+                <section class="<%= gradeSec.wrapperClass %>">
+                    <div class="container">
+                    <div class="<%= gradeSec.innerClass %>">
+                        <div class="<%= gradeSec.headerClass %>">
+                        <h2 class="section-title"><%= gradeSec.title %></h2>
+                        <div class="tab-bar">
+                            <div class="tab-list">
+                            <% gradeSec.subjects.forEach((subject, idx) => { %>
+                                <button class="tab-btn <%= idx === 0 ? 'active' : '' %>" data-target="<%= subject.targetId %>">
+                                <%= subject.name %>
+                                </button>
+                            <% }); %>
+                            </div>
+                            <div class="tab-divider"></div>
+                            <div class="tab-pagination">
+                            <button class="btn-prev-page"><i data-lucide="chevron-left"></i></button>
+                            <button class="btn-next-page"><i data-lucide="chevron-right"></i></button>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="tab-content-wrapper">
+                        <% gradeSec.subjects.forEach((subject, idx) => { %>
+                            <div class="tab-content <%= idx === 0 ? 'active' : '' %>" id="<%= subject.targetId %>">
+                            <%- include('partials/tab-content.ejs', { tabData: subject.content }) %>
+                            </div>
+                        <% }); %>
+                        </div>
+                    </div>
+                    </div>
+                </section>
+                <% }); %>
+            <% } %>
+
+        <!-- TIN TỨC & SỰ KIỆN (có thể động) -->
+        <section class="news-section">
+            <div class="container">
+            <div class="news-header">
+                <h2 class="section-title">Tin tức & Sự kiện</h2>
+                <p class="news-subtitle">Cập nhật mới nhất về kỳ thi, tài liệu và hoạt động của DocuStudy</p>
+            </div>
+            <div class="news-grid">
+                <!-- Bài viết nổi bật bên trái -->
+                <div class="news-main">
+                <div class="news-main-image">
+                    <img src="<%= featuredNews.image %>" alt="Tin tức nổi bật" />
+                </div>
+                <div class="news-main-content">
+                    <span class="news-badge">Mới nhất</span>
+                    <h3 class="news-main-title"><%= featuredNews.title %></h3>
+                    <p class="news-main-desc"><%= featuredNews.description %></p>
+                    <div class="news-main-footer">
+                    <span><i data-lucide="calendar"></i> <%= featuredNews.date %></span>
+                    <a href="<%= featuredNews.link %>" class="news-read-more">Đọc thêm <i data-lucide="chevron-right"></i></a>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Danh sách bài viết bên phải -->
+                <div class="news-side">
+                <% if (newsList && newsList.length) { %>
+                    <% newsList.forEach(item => { %>
+                    <a href="<%= item.link %>" class="news-item">
+                        <div class="news-item-image"><img src="<%= item.image %>" alt="Thumb" /></div>
+                        <div class="news-item-body">
+                        <h4 class="news-item-title"><%= item.title %></h4>
+                        <span class="news-item-date"><%= item.date %></span>
+                        </div>
+                    </a>
+                    <% }); %>
+                <% } %>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- CTA SECTION (tĩnh) -->
+        <section class="cta-section">
+            <div class="cta-container">
+            <div class="cta-content">
+                <h2 class="cta-title">
+                Bạn có tài liệu hay? <br />
+                <span class="cta-highlight">Chia sẻ ngay</span> cùng cộng đồng.
+                </h2>
+                <p class="cta-description">
+                Mỗi tài liệu bạn đóng góp đều giúp ích cho hàng ngàn học sinh khác trên khắp cả nước. Tham gia cùng chúng tôi ngay hôm nay!
+                </p>
+                <div class="cta-buttons">
+                <button class="cta-btn-primary">Đăng tải tài liệu</button>
+                <button class="cta-btn-secondary">Tìm hiểu thêm</button>
+                </div>
+            </div>
+            <div class="cta-bg-effect cta-bg-orange"></div>
+            <div class="cta-bg-effect cta-bg-blue"></div>
+            </div>
+        </section>
+        </main>
+    <%- include('partials/footer')%>
+    <script src="js/trang_chu.js"></script>
+</body>
+</html>

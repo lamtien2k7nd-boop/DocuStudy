@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài liệu miễn phí</title>
+    <link rel="stylesheet" href="/src/public/css/basev2.css">
+    <link rel="stylesheet" href="/src/public/css/phan_loai_v2.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head> 
+<body class="custom-body">
+    <header class="custom-header">
+        <div class="header-container">
+            <div class="logo-wrapper">
+                <div class="icon-box">
+                    <i data-lucide="library" class="icon-white"></i>
+                </div>
+                <span class="logo-text">
+                    Docu<span class="logo-highlight">Study.</span>
+                </span>
+            </div>
+
+            <nav class="main-nav">
+                <a href="/" class="nav-link ">Trang chủ<span class="nav-underline"></span></a>
+                <a href="phanloai" class="nav-link active">Tài liệu<span class="nav-underline"></span></a>
+                <!-- <a href="#" class="nav-link">Luyện thi<span class="nav-underline"></span></a> -->
+                <a href="congdong" class="nav-link">Cộng đồng<span class="nav-underline"></span></a>
+            </nav>
+
+            <div class="auth-wrapper">
+                <button class="login-btn" onclick="openModal()">
+                    <i data-lucide="user" class="icon-small"></i>
+                    <span>Đăng nhập</span>
+                </button>
+                <button class="menu-btn">
+                    <i data-lucide="menu" class="icon-menu"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="cate-title">Kho tài liệu</div>
+        <div class="cate-description">
+            <p>Khám phá bộ sưu tập tài liệu phong phú và đa dạng</p>
+        </div>
+        
+        <div class="cate-content">
+            <section class="hsa-cate-section">
+                <h2 class="cate-section-title">Đề thi HSA</h2>
+                <div class="section-container">
+                    <a href="detheophanloai">
+                        <div class="section-card" id="hsa-dinh-luong">
+                            <div class="section-title">Đề thi định lượng</div>                    
+                        </div>
+                    </a>
+                    <a href="#">
+                        <div class="section-card" id="hsa-dinh-tinh">                    
+                            <div class="section-title">Đề thi định tính</div>                    
+                        </div>
+                    </a>
+                    <a href="#">
+                        <div class="section-card" id="hsa-tieng-anh">                    
+                            <div class="section-title">Đề thi tiếng Anh</div>                    
+                        </div>
+                    </a>
+                    <a href="#">
+                        <div class="section-card" id="hsa-khoa-hoc">                    
+                            <div class="section-title">Đề thi khoa học</div>                    
+                        </div>
+                    </a>
+                    <a href="#">
+                        <div class="section-card" id="hsa-luyen-thi">                    
+                            <div class="section-title">Đề thi HSA tổng hợp</div>                    
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <section class="tsa-cate-section">
+                <h2 class="cate-section-title">Đề thi TSA</h2>
+                <div class="section-container">
+
+                <a href="#">
+                    <div class="section-card" id="tsa-td-toan-hoc">                    
+                        <div class="section-title">Đề thi tư duy toán học</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="tsa-td-doc-hieu">                    
+                        <div class="section-title">Đề thi tư duy đọc hiểu</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="tsa-td-khoa-hoc">                    
+                        <div class="section-title">Đề thi tư duy khoa học</div>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="tsa-luyen-thi">                    
+                        <div class="section-title">Đề thi TSA tổng hợp</div>                    
+                    </div>
+                </a>
+                </div>
+            </section>
+
+            <section class="vact-cate-section">
+                <h2 class="cate-section-title">Đề thi VACT</h2>
+                <div class="section-container">
+
+                <a href="#">
+                    <div class="section-card" id="vact-sd-ngon-ngu">                    
+                        <div class="section-title">Đề thi sử dụng ngôn ngữ</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="vact-toan-hoc">                    
+                        <div class="section-title">Đề thi toán học</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="vact-td-khoa-hoc">                    
+                        <div class="section-title">Đề thi tư duy khoa học</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="vact-luyen-thi">                    
+                        <div class="section-title">Đề thi VACT tổng hợp</div>                    
+                    </div>
+                </a>
+                </div>
+            </section>
+
+            <section class="spt-cate-section">
+                <h2 class="cate-section-title">Đề thi SPT</h2>
+                <a href="#">
+                    <div class="section-card" id="spt-luyen-thi">                    
+                        <div class="section-title">Đề thi SPT tổng hợp</div>                    
+                    </div>
+                </a>
+            </section>
+
+            <section class="thpt-cate-section">
+                <h2 class="cate-section-title">Tài liệu THPT</h2>
+                <a href="#">
+                    <div class="section-card" id="thpt-luyen-thi">                    
+                        <div class="section-title">Tài liệu luyện thi THPT</div>                    
+                    </div>
+                </a>
+            </section>
+
+            <section class="g12-cate-section">
+                <h2 class="cate-section-title">Tài liệu lớp 12</h2>
+                <div class="section-container">
+
+                <a href="#">
+                    <div class="section-card" id="g12-toan">                    
+                        <div class="section-title">Tài liệu toán lớp 12</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g12-van">                    
+                        <div class="section-title">Tài liệu văn lớp 12</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g12-anh">                    
+                        <div class="section-title">Tài liệu anh lớp 12</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g12-ly">                    
+                        <div class="section-title">Tài liệu lý lớp 12</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g12-hoa">                    
+                        <div class="section-title">Tài liệu hóa lớp 12</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g12-sinh">                    
+                        <div class="section-title">Tài liệu sinh lớp 12</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g12-su">                    
+                        <div class="section-title">Tài liệu sử lớp 12</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g12-dia">                    
+                        <div class="section-title">Tài liệu địa lớp 12</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g12-gdktpl">                    
+                        <div class="section-title">Tài liệu GDKTPL lớp 12</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g12-tin">                    
+                        <div class="section-title">Tài liệu tin học lớp 12</div>                    
+                    </div>
+                </a>
+                </div>
+            </section>
+
+            <section class="g11-cate-section">
+                <h2 class="cate-section-title">Tài liệu lớp 11</h2>
+                <div class="section-container">
+
+                <a href="#">
+                    <div class="section-card" id="g11-toan">                    
+                        <div class="section-title">Tài liệu toán lớp 11</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g11-van">                    
+                        <div class="section-title">Tài liệu văn lớp 11</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g11-anh">                    
+                        <div class="section-title">Tài liệu anh lớp 11</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g11-ly">                    
+                        <div class="section-title">Tài liệu lý lớp 11</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g11-hoa">                    
+                        <div class="section-title">Tài liệu hóa lớp 11</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g11-sinh">                    
+                        <div class="section-title">Tài liệu sinh lớp 11</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g11-su">                    
+                        <div class="section-title">Tài liệu sử lớp 11</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g11-dia">                    
+                        <div class="section-title">Tài liệu địa lớp 11</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g11-gdktpl">                    
+                        <div class="section-title">Tài liệu GDKTPL lớp 11</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g11-tin">                    
+                        <div class="section-title">Tài liệu tin học lớp 11</div>                    
+                    </div>
+                </a>
+                </div>
+            </section>
+
+            <section class="g10-cate-section">
+                <h2 class="cate-section-title">Tài liệu lớp 10</h2>
+                <div class="section-container">
+
+                <a href="#">
+                    <div class="section-card" id="g10-toan">                    
+                        <div class="section-title">Tài liệu toán lớp 10</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g10-van">                    
+                        <div class="section-title">Tài liệu văn lớp 10</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g10-anh">                    
+                        <div class="section-title">Tài liệu anh lớp 10</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g10-ly">                    
+                        <div class="section-title">Tài liệu lý lớp 10</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g10-hoa">                    
+                        <div class="section-title">Tài liệu hóa lớp 10</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g10-sinh">                    
+                        <div class="section-title">Tài liệu sinh lớp 10</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g10-su">                    
+                        <div class="section-title">Tài liệu sử lớp 10</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g10-dia">                    
+                        <div class="section-title">Tài liệu địa lớp 10</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g10-gdktpl">                    
+                        <div class="section-title">Tài liệu GDKTPL lớp 10</div>                    
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="section-card" id="g10-tin">                    
+                        <div class="section-title">Tài liệu tin học lớp 10</div>                    
+                    </div>
+                </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="custom-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col footer-col-main">
+                    <div class="footer-logo-wrapper">
+                        <div class="footer-icon-box">
+                            <i data-lucide="library" class="footer-icon"></i>
+                        </div>
+                        <span class="footer-logo-text">
+                            Docu<span class="footer-logo-highlight">Study.</span>
+                        </span>
+                    </div>
+                    <p class="footer-description">
+                        Nền tảng chia sẻ tài liệu giáo dục hàng đầu Việt Nam. Tối giản trong thiết kế, tối ưu trong trải nghiệm học tập.
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4 class="footer-title">Hệ sinh thái</h4>
+                    <ul class="footer-list">
+                        <li><a href="#" class="footer-link">Đề thi HSA/TSA</a></li>
+                        <li><a href="#" class="footer-link">Tài liệu THPT</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4 class="footer-title">Hỗ trợ & Pháp lý</h4>
+                    <ul class="footer-list">
+                        <li><a href="#" class="footer-link">Điều khoản sử dụng</a></li>
+                        <li><a href="#" class="footer-link">Chính sách bảo mật</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2026 DOCUSTUDY PLATFORM. MADE WITH PASSION FOR EDUCATION.
+                </p>
+                <div class="footer-cookies">
+                    <a href="#">privacy</a>
+                    <a href="#">cookies</a>
+                    <a href="#">security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="overlay" id="overlay">
+        <div class="modal" id="mainModal">
+            <button class="back-btn" id="back-btn" onclick="switchView('view-general')">← Quay lại</button>
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+
+            <div class="view" id="view-general">
+                <div class="v1-left">
+                    <h2>Chào mừng bạn!</h2>
+                    <button class="btn-large primary" onclick="switchView('view-login')">Đăng nhập</button>
+                    <button class="btn-large" onclick="switchView('view-register')">Đăng ký</button>
+                </div>
+                <div class="v1-right">
+                    <div class="methods-grid">
+                        <button class="method-btn"><i data-lucide="user"></i> Khách</button>
+                        <button class="method-btn"><i data-lucide="mail"></i> Google</button>
+                        <button class="method-btn"><i data-lucide="smartphone"></i> Facebook</button>
+                        <button class="method-btn"><i data-lucide="github"></i> GitHub</button>
+                        <div class="guest-inputs" id="guest-form">
+                            <input type="text" placeholder="Tên hiển thị" />
+                            <input type="email" placeholder="Email (nếu có)" />
+                            <button style="margin-top: 10px; padding: 8px; background: #f97316; color: white; border: none; border-radius: 8px;">Vào nhanh</button>
+                        </div>
+                    </div>
+                    <div class="dev-links">
+                        <p>Hoặc đăng nhập bằng</p>
+                        <div class="social-icons">
+                            <a href="#"><i data-lucide="mail"></i></a>
+                            <a href="#"><i data-lucide="facebook"></i></a>
+                            <a href="#"><i data-lucide="github"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="view form-view" id="view-login">
+                <div class="header-graphic"></div>
+                <h2 class="form-title">Đăng nhập</h2>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="example@mail.com" />
+                </div>
+                <div class="input-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" placeholder="••••••••" />
+                </div>
+                <div class="form-options">
+                    <label><input type="checkbox" /> Ghi nhớ</label>
+                    <a href="#">Quên mật khẩu?</a>
+                </div>
+                <button class="submit-btn">Đăng nhập</button>
+                <p class="toggle-form-text">Chưa có tài khoản? <span onclick="switchView('view-register')">Đăng ký</span></p>
+            </div>
+
+            <div class="view form-view" id="view-register">
+                <div class="header-graphic"></div>
+                <h2 class="form-title">Đăng ký</h2>
+                <div class="input-group">
+                    <label>Họ và tên</label>
+                    <input type="text" placeholder="Nguyễn Văn A" />
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="example@mail.com" />
+                </div>
+                <div class="input-group">
+                    <label>Mật khẩu</label>
+                    <input type="password" placeholder="••••••••" />
+                </div>
+                <button class="submit-btn">Tạo tài khoản</button>
+                <p class="toggle-form-text">Đã có tài khoản? <span onclick="switchView('view-login')">Đăng nhập</span></p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/js/homev2.js"></script>
+</body>
+</html>

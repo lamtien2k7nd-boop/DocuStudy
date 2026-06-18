@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title || 'Chi tiết tin tức' %></title>
+    <link rel="stylesheet" href="/css/basev2.css">
+    <link rel="stylesheet" href="/css/news.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="custom-body">
+    <%- include('../partials/header') %>
+
+    <main>
+        <section class="news-detail">
+            <div class="container">
+                <!-- Breadcrumb -->
+                <div class="breadcrumb">
+                    <a href="/">Trang chủ</a>
+                    <i data-lucide="chevron-right"></i>
+                    <a href="/tin-tuc">Tin tức</a>
+                    <i data-lucide="chevron-right"></i>
+                    <span><%= news.title %></span>
+                </div>
+
+                <!-- Nội dung -->
+                <article class="news-article">
+                    <div class="news-article-header">
+                        <h1 class="article-title"><%= news.title %></h1>
+                        <div class="article-meta">
+                            <span><i data-lucide="calendar"></i> <%= news.date %></span>
+                            <% if (news.is_featured) { %>
+                                <span class="featured-badge">Nổi bật</span>
+                            <% } %>
+                        </div>
+                    </div>
+
+                    <% if (news.image_url) { %>
+                        <div class="article-image">
+                            <img src="<%= news.image_url %>" alt="<%= news.title %>">
+                        </div>
+                    <% } %>
+
+                    <div class="article-content">
+                        <p><%= news.content || news.description %></p>
+                    </div>
+                </article>
+
+                <!-- Tin liên quan -->
+                <% if (relatedNews && relatedNews.length > 0) { %>
+                    <section class="related-news">
+                        <h2 class="section-title">Tin tức liên quan</h2>
+                        <div class="related-grid">
+                            <% relatedNews.forEach(item => { %>
+                                <a href="<%= item.link %>" class="related-card">
+                                    <div class="related-card-image">
+                                        <img src="<%= item.image %>" alt="<%= item.title %>">
+                                    </div>
+                                    <div class="related-card-body">
+                                        <h4><%= item.title %></h4>
+                                        <span><%= item.date %></span>
+                                    </div>
+                                </a>
+                            <% }); %>
+                        </div>
+                    </section>
+                <% } %>
+
+                <!-- Back button -->
+                <div class="back-button">
+                    <a href="/tin-tuc" class="back-link">
+                        <i data-lucide="arrow-left"></i> Quay lại danh sách
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <%- include('../partials/footer') %>
+    <script src="/js/trang_chu.js"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài liệu miễn phí</title>
+    <link rel="stylesheet" href="/css/basev2.css">
+    <link rel="stylesheet" href="/css/de_theo_phan_loai.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="custom-body">
+    <%- include('partials/header') %>
+
+    <main>
+        <!-- Hero Section - Breadcrumb, stats, actions -->
+        <section class="hero-section">
+            <div class="hero-container">
+                <div class="link-steps">
+                    <a href="<%= breadcrumb.homeLink %>" class="link"><%= breadcrumb.homeLabel %></a>
+                    <i data-lucide="chevron-right" class="link-icon"></i>
+                    <a href="<%= breadcrumb.categoryLink %>" class="link"><%= breadcrumb.categoryLabel %></a>
+                    <% if (breadcrumb.subcategoryLink) { %>
+                        <i data-lucide="chevron-right" class="link-icon"></i>
+                        <a href="<%= breadcrumb.subcategoryLink %>" class="link"><%= breadcrumb.subcategoryLabel %></a>
+                    <% } %>
+                </div>
+                <div class="title">
+                    <div class="folder-logo"><i data-lucide="folder" class="folder-icon"></i></div>
+                    <div class="title-text">
+                        <h1><%= currentCategory.name %></h1>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <i data-lucide="file-text" class="stat-icon"></i>
+                                <span class="stat-text"><%= currentCategory.documentCount %> tài liệu</span>
+                            </div>
+                            <div class="stat-item">
+                                <i data-lucide="users" class="stat-icon"></i>
+                                <span class="stat-text"><%= currentCategory.viewCount %> lượt truy cập</span>
+                            </div>
+                            <div class="stat-item">
+                                <i data-lucide="star" class="stat-icon"></i>
+                                <span class="stat-text"><%= currentCategory.rating %>/5 sao</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <div class="left-tab">
+                        <div class="tab-item follow">
+                            <i data-lucide="heart" class="follow-icon"></i>
+                            <span>Theo dõi</span>
+                        </div>
+                        <div class="tab-item share">
+                            <i data-lucide="share-2" class="share-icon"></i>
+                            <span>Chia sẻ</span>
+                        </div>
+                        <div class="tab-item rate">
+                            <i data-lucide="star" class="rate-icon"></i>
+                            <span>Đánh giá</span>
+                        </div>
+                    </div>
+                    <div class="right-tab">
+                        <div class="search-bar">
+                            <input type="text" class="search-input" placeholder="Tìm kiếm tài liệu..." />
+                            <button class="search-btn">
+                                <i data-lucide="search" class="search-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trending Section (carousel) -->
+        <% if (trendingItems && trendingItems.length) { %>
+        <section class="trending-section">
+            <div class="top-wrapper">
+                <div class="title">Trending</div>
+                <div class="carousel-btns">
+                    <button class="carousel-btn prev" style="display: none;"><i data-lucide="chevron-left"></i></button>
+                    <button class="carousel-btn next"><i data-lucide="chevron-right"></i></button>
+                </div>
+            </div>
+            <div class="trending-items carousel-container">
+                <% trendingItems.forEach(item => { %>
+                    <%- include('partials/card', { card: item }) %>
+                <% }); %>
+            </div>
+        </section>
+        <% } %>
+
+        <!-- Favourite Section (carousel) -->
+        <% if (favoriteItems && favoriteItems.length) { %>
+        <section class="favourite-section">
+            <div class="top-wrapper">
+                <div class="title">Được yêu thích nhiều</div>
+                <div class="carousel-btns">
+                    <button class="carousel-btn prev" style="display: none;"><i data-lucide="chevron-left"></i></button>
+                    <button class="carousel-btn next"><i data-lucide="chevron-right"></i></button>
+                </div>
+            </div>
+            <div class="favourite-items carousel-container">
+                <% favoriteItems.forEach(item => { %>
+                    <%- include('partials/card', { card: item }) %>
+                <% }); %>
+            </div>
+        </section>
+        <% } %>
+
+        <!-- All Documents Section (pagination) -->
+        <section class="all-section">
+            <div class="top-wrapper">
+                <div class="title">Tất cả đề thi</div>
+                <div class="carousel-btns pagination-btns">
+                    <button class="carousel-btn prev-page" <%= currentPage <= 1 ? 'disabled' : '' %>><i data-lucide="chevron-left"></i></button>
+                    <span class="pagination-dots">
+                        <% for (let i = 1; i <= totalPages; i++) { %>
+                            <button class="page-dot <%= i === currentPage ? 'active' : '' %>" data-page="<%= i %>"></button>
+                        <% } %>
+                    </span>
+                    <button class="carousel-btn next-page" <%= currentPage >= totalPages ? 'disabled' : '' %>><i data-lucide="chevron-right"></i></button>
+                </div>
+            </div>
+            <div class="items">
+                <% if (allItems && allItems.length) { %>
+                    <% allItems.forEach(item => { %>
+                        <%- include('partials/card', { card: item }) %>
+                    <% }); %>
+                <% } else { %>
+                    <p>Không có tài liệu nào.</p>
+                <% } %>
+            </div>
+        </section>
+    </main>
+
+    <%- include('partials/footer') %>
+
+    <script src="/js/trang_chu.js"></script>
+    <script src="/js/de_theo_phan_loai.js"></script>
+</body>
+
+</html>

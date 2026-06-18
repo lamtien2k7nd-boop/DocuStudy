@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài liệu miễn phí</title>
+    <link rel="stylesheet" href="css/basev2.css">
+    <link rel="stylesheet" href="css/cong_dong.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+<body class="custom-body">
+    <header class="custom-header">
+        <div class="header-container">
+            <div class="logo-wrapper">
+                <div class="icon-box">
+                    <i data-lucide="library" class="icon-white"></i>
+                </div>
+                <span class="logo-text">
+                    Docu<span class="logo-highlight">Study.</span>
+                </span>
+            </div>
+
+            <nav class="main-nav">
+                <a href="/" class="nav-link ">Trang chủ
+                    <span class="nav-underline"></span>
+                </a>
+                <a href="phanloai" class="nav-link">Tài liệu
+                    <span class="nav-underline"></span>
+                </a>
+                <!-- <a href="#" class="nav-link">Luyện thi
+                    <span class="nav-underline"></span>
+                </a> -->
+                <a href="#" class="nav-link active">Cộng đồng
+                    <span class="nav-underline"></span>
+                </a>
+            </nav>
+
+            <div class="auth-wrapper">
+                <button class="login-btn" onclick="openModal()">
+                    <i data-lucide="user" class="icon-small"></i>
+                    <span>Đăng nhập</span>
+                </button>
+                <button class="menu-btn">
+                    <i data-lucide="menu" class="icon-menu"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    <section class="new-post-section">
+        <div class="new-post-container">
+            <div class="new-post-header">
+                <h2 class="section-title">Bài viết mới</h2>
+                <p class="section-subtitle">Chia sẻ kiến thức và kinh nghiệm với cộng đồng</p>
+            </div>
+            <div class="new-post-content">
+                <div class="new-post-input">
+                    <input type="text" placeholder="Bạn đang nghĩ gì?" class="new-post-input-field">
+                </div>
+                <div class="new-post-tools">
+                    <div class="new-post-tool">
+                        <i data-lucide="image" class="w-5 h-5"></i>
+                        <span>Ảnh</span>
+                    </div>
+                    <div class="new-post-tool">
+                        <i data-lucide="video" class="w-5 h-5"></i>
+                        <span>Video</span>
+                    </div>
+                    <div class="new-post-tool">
+                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                        <span>Tài liệu</span>
+                    </div>
+                    <button class="new-post-button">Đăng bài</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="comment-section">
+        <div class="comment-container">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90910b1b2?w=600" alt="User Avatar">
+                </div>
+                <div class="user-details">
+                    <div class="user-name">user1</div>
+                </div>
+                <div class="commented-place">
+                    <p>Bình luận trong tài liệu: <a href="chitietde">Đề thi Định lượng HSA 2026 Đề số 1</a></p>                    
+                </div>
+            </div>
+            <div class="comment-content">
+                <div class="comment-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum, quod.</div>
+            </div>
+            <div class="comment-box">
+                <div class="comment-user">
+                    <div class="user-avatar">
+                        <img src="https://images.unsplash.com/photo-1523050854058-8df90910b1b2?w=600" alt="User Avatar">
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">user1</div>
+                    </div>
+                </div>
+                <div class="comment-tools">
+                    <div class="comment-tool">
+                        <i data-lucide="smile"></i>
+                    </div>
+                    <div class="comment-tool">
+                        <i data-lucide="image"></i>
+                    </div>
+                    <div class="comment-tool">
+                        <i data-lucide="video"></i>
+                    </div>
+                </div>
+                <div class="comment-input">
+                    <input type="text" placeholder="Bình luận...">
+                </div>
+                <div class="comment-button">
+                    <button>Gửi</button>
+                </div>
+            </div>
+        </div>
+        <div class="comment-container">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90910b1b2?w=600" alt="User Avatar">
+                </div>
+                <div class="user-details">
+                    <div class="user-name">user1</div>
+                </div>
+                <div class="commented-place">
+                    <p>Bình luận trong tài liệu: <a href="chitietde">Đề thi Định lượng HSA 2026 Đề số 1</a></p>
+                </div>
+            </div>
+            <div class="comment-content">
+                <div class="comment-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum, quod.</div>
+            </div>
+            <div class="comment-box">
+                <div class="comment-user">
+                    <div class="user-avatar">
+                        <img src="https://images.unsplash.com/photo-1523050854058-8df90910b1b2?w=600" alt="User Avatar">
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">user1</div>
+                    </div>
+                </div>
+                <div class="comment-tools">
+                    <div class="comment-tool">
+                        <i data-lucide="smile"></i>
+                    </div>
+                    <div class="comment-tool">
+                        <i data-lucide="image"></i>
+                    </div>
+                    <div class="comment-tool">
+                        <i data-lucide="video"></i>
+                    </div>
+                </div>
+                <div class="comment-input">
+                    <input type="text" placeholder="Bình luận...">
+                </div>
+                <div class="comment-button">
+                    <button>Gửi</button>
+                </div>
+            </div>
+        </div>
+        <div class="comment-container">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90910b1b2?w=600" alt="User Avatar">
+                </div>
+                <div class="user-details">
+                    <div class="user-name">user1</div>
+                </div>
+                <div class="commented-place">
+                    <p>Bình luận trong tài liệu: <a href="chitietde">Đề thi Định lượng HSA 2026 Đề số 1</a></p>
+                </div>
+            </div>
+            <div class="comment-content">
+                <div class="comment-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum, quod.</div>
+            </div>
+            <div class="comment-box">
+                <div class="comment-user">
+                    <div class="user-avatar">
+                        <img src="https://images.unsplash.com/photo-1523050854058-8df90910b1b2?w=600" alt="User Avatar">
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">user1</div>
+                    </div>
+                </div>
+                <div class="comment-tools">
+                    <div class="comment-tool">
+                        <i data-lucide="smile"></i>
+                    </div>
+                    <div class="comment-tool">
+                        <i data-lucide="image"></i>
+                    </div>
+                    <div class="comment-tool">
+                        <i data-lucide="video"></i>
+                    </div>
+                </div>
+                <div class="comment-input">
+                    <input type="text" placeholder="Bình luận...">
+                </div>
+                <div class="comment-button">
+                    <button>Gửi</button>
+                </div>
+            </div>
+        </div>
+        <div class="comment-container">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90910b1b2?w=600" alt="User Avatar">
+                </div>
+                <div class="user-details">
+                    <div class="user-name">user1</div>
+                </div>
+                <div class="commented-place">
+                    <p>Bình luận trong tài liệu: <a href="chitietde">Đề thi Định lượng HSA 2026 Đề số 1</a></p>
+                </div>
+            </div>
+            <div class="comment-content">
+                <div class="comment-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum, quod.</div>
+            </div>
+            <div class="comment-box">
+                <div class="comment-user">
+                    <div class="user-avatar">
+                        <img src="https://images.unsplash.com/photo-1523050854058-8df90910b1b2?w=600" alt="User Avatar">
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">user1</div>
+                    </div>
+                </div>
+                <div class="comment-tools">
+                    <div class="comment-tool">
+                        <i data-lucide="smile"></i>
+                    </div>
+                    <div class="comment-tool">
+                        <i data-lucide="image"></i>
+                    </div>
+                    <div class="comment-tool">
+                        <i data-lucide="video"></i>
+                    </div>
+                </div>
+                <div class="comment-input">
+                    <input type="text" placeholder="Bình luận...">
+                </div>
+                <div class="comment-button">
+                    <button>Gửi</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="news-section">
+            <div class="container">
+                <div class="news-header">
+                    <h2 class="section-title">Tin tức & Sự kiện</h2>
+                    <p class="news-subtitle">Cập nhật mới nhất về kỳ thi, tài liệu và hoạt động của DocuStudy</p>
+                </div>
+
+                <div class="news-grid">
+                    <!-- Bài viết nổi bật bên trái -->
+                    <div class="news-main">
+                        <div class="news-main-image">
+                            <img src="https://images.unsplash.com/photo-1523050854058-8df90910b1b2?w=600"
+                                alt="Tin tức nổi bật" />
+                        </div>
+                        <div class="news-main-content">
+                            <span class="news-badge">Mới nhất</span>
+                            <h3 class="news-main-title">DocuStudy ra mắt bộ đề thi thử HSA & TSA 2026 hoàn toàn miễn phí
+                            </h3>
+                            <p class="news-main-desc">Hơn 5000+ học sinh đã tham gia luyện đề chỉ sau 2 tuần. Bộ đề được
+                                biên soạn bởi các thầy cô giàu kinh nghiệm, bám sát cấu trúc mới nhất của Bộ GD&ĐT.</p>
+                            <div class="news-main-footer">
+                                <span><i data-lucide="calendar" class="w-4 h-4"></i> 12/05/2026</span>
+                                <a href="#" class="news-read-more">Đọc thêm <i data-lucide="chevron-right"
+                                        class="w-4 h-4"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Danh sách bài viết bên phải -->
+                    <div class="news-side">
+                        <!-- Item 1 -->
+                        <a href="#" class="news-item">
+                            <div class="news-item-image">
+                                <img src="https://images.unsplash.com/photo-1434030216411-0cec8871dcb4?w=200"
+                                    alt="Thumb" />
+                            </div>
+                            <div class="news-item-body">
+                                <h4 class="news-item-title">Lịch thi thử ĐGNL ĐHQG Hà Nội 2026 chính thức</h4>
+                                <span class="news-item-date">10/05/2026</span>
+                            </div>
+                        </a>
+
+                        <!-- Item 2 -->
+                        <a href="#" class="news-item">
+                            <div class="news-item-image">
+                                <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=200"
+                                    alt="Thumb" />
+                            </div>
+                            <div class="news-item-body">
+                                <h4 class="news-item-title">Top 5 phương pháp ôn thi TSA hiệu quả cho học sinh lớp 12
+                                </h4>
+                                <span class="news-item-date">09/05/2026</span>
+                            </div>
+                        </a>
+
+                        <!-- Item 3 -->
+                        <a href="#" class="news-item">
+                            <div class="news-item-image">
+                                <img src="https://images.unsplash.com/photo-1513258496098-4816802a4fb8?w=200"
+                                    alt="Thumb" />
+                            </div>
+                            <div class="news-item-body">
+                                <h4 class="news-item-title">DocuStudy đạt 100.000 lượt tải tài liệu chỉ sau 3 tháng</h4>
+                                <span class="news-item-date">07/05/2026</span>
+                            </div>
+                        </a>
+
+                        <!-- Item 4 -->
+                        <a href="#" class="news-item">
+                            <div class="news-item-image">
+                                <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=200"
+                                    alt="Thumb" />
+                            </div>
+                            <div class="news-item-body">
+                                <h4 class="news-item-title">Hướng dẫn đăng ký thi ĐGNL HSA 2026 trực tuyến</h4>
+                                <span class="news-item-date">05/05/2026</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA SECTION -->
+        <section class="cta-section">
+            <div class="cta-container">
+                <div class="cta-content">
+                    <h2 class="cta-title">
+                        Bạn có tài liệu hay? <br />
+                        <span class="cta-highlight">Chia sẻ ngay</span> cùng cộng đồng.
+                    </h2>
+                    <p class="cta-description">
+                        Mỗi tài liệu bạn đóng góp đều giúp ích cho hàng ngàn học sinh khác trên khắp cả nước. Tham gia
+                        cùng chúng tôi ngay hôm nay!
+                    </p>
+                    <div class="cta-buttons">
+                        <button class="cta-btn-primary">Đăng tải tài liệu</button>
+                        <button class="cta-btn-secondary">Tìm hiểu thêm</button>
+                    </div>
+                </div>
+                <div class="cta-bg-effect cta-bg-orange"></div>
+                <div class="cta-bg-effect cta-bg-blue"></div>
+            </div>
+        </section>
+    </main>
+    <footer class="custom-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <!-- Cột 1: Logo và mô tả -->
+                <div class="footer-col footer-col-main">
+                    <div class="footer-logo-wrapper">
+                        <div class="footer-icon-box">
+                            <i data-lucide="library" class="footer-icon"></i>
+                        </div>
+                        <span class="footer-logo-text">
+                            Docu<span class="footer-logo-highlight">Study.</span>
+                        </span>
+                    </div>
+                    <p class="footer-description">
+                        Nền tảng chia sẻ tài liệu giáo dục hàng đầu Việt Nam. Tối giản trong thiết kế, tối ưu trong trải
+                        nghiệm học tập.
+                    </p>
+                </div>
+
+                <!-- Cột 2: Hệ sinh thái -->
+                <div class="footer-col">
+                    <h4 class="footer-title">Hệ sinh thái</h4>
+                    <ul class="footer-list">
+                        <li><a href="#" class="footer-link">Đề thi HSA/TSA</a></li>
+                        <li><a href="#" class="footer-link">Tài liệu THPT</a></li>
+                    </ul>
+                </div>
+
+                <!-- Cột 3: Hỗ trợ & Pháp lý -->
+                <div class="footer-col">
+                    <h4 class="footer-title">Hỗ trợ & Pháp lý</h4>
+                    <ul class="footer-list">
+                        <li><a href="#" class="footer-link">Điều khoản sử dụng</a></li>
+                        <li><a href="#" class="footer-link">Chính sách bảo mật</a></li>
+                    </ul>
+                </div>
+
+                <!-- Cột 4: Tin tức nổi bật -->
+                <div class="footer-col">
+                    <h4 class="footer-title">Liên hệ với chúng tôi</h4>
+                    <ul class="footer-list">
+                        <li><a href="#" class="footer-link">Facebook</a></li>
+                        <li><a href="#" class="footer-link">Instagram</a></li>
+                        <li><a href="#" class="footer-link">Twitter</a></li>
+                        <li><a href="#" class="footer-link">Github</a></li>
+                        <li><a href="#" class="footer-link">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer bottom -->
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2026 DOCUSTUDY PLATFORM. MADE WITH PASSION FOR EDUCATION.
+                </p>
+                <div class="footer-cookies">
+                    <a href="#">privacy</a>
+                    <a href="#">cookies</a>
+                    <a href="#">security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- OVERLAY & MODAL LOGIN -->
+    <div class="overlay" id="overlay">
+        <div class="modal" id="mainModal">
+
+            <button id="back-btn" class="back-btn" onclick="switchView('view-general')">&lt; Back</button>
+            <span class="close-btn" id="close-btn" onclick="closeModal()">×</span>
+
+            <div class="view" id="view-general">
+                <div class="v1-left">
+                    <h2>Welcome to App</h2>
+                    <button class="btn-large primary" onclick="switchView('view-login')">Đăng nhập</button>
+                    <button class="btn-large" onclick="switchView('view-signup')">Đăng ký</button>
+                </div>
+                <div class="v1-right">
+                    <div class="methods-grid">
+                        <button class="method-btn">🔵 Facebook</button>
+                        <button class="method-btn">🔴 Google</button>
+                        <button class="method-btn">⚫ Github</button>
+                        <button class="method-btn">🟣 Discord</button>
+                    </div>
+
+                    <div class="dev-links">
+                        <p>Kết nối với Developer</p>
+                        <div class="social-icons">
+                            <a href="#">Fb</a>
+                            <a href="#">Git</a>
+                            <a href="#">In</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="view form-view" id="view-login">
+                <div class="header-graphic"></div>
+                <h2 class="form-title">Welcome back</h2>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="example@gmail.com">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="••••••••••">
+                </div>
+                <div class="form-options">
+                    <label><input type="checkbox"> Remember me</label>
+                    <a href="#">Forgot password?</a>
+                </div>
+                <button class="submit-btn">Sign in</button>
+
+                <p class="social-login-text">Sign in with</p>
+                <div class="social-icons-form">
+                    <a href="#">f</a> <a href="#">G</a> <a href="#"></a>
+                </div>
+
+                <p class="toggle-form-text">Don't have an account? <span onclick="switchView('view-signup')">Sign
+                        up</span></p>
+            </div>
+
+            <div class="view form-view" id="view-signup">
+                <div class="header-graphic"></div>
+                <h2 class="form-title">Get Started</h2>
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" placeholder="Enter Full Name">
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="Enter Email">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="Enter Password">
+                </div>
+                <div class="form-options">
+                    <label><input type="checkbox"> I agree to the processing of <b>Personal data</b></label>
+                </div>
+                <button class="submit-btn">Sign up</button>
+
+                <p class="social-login-text">Sign up with</p>
+                <div class="social-icons-form">
+                    <a href="#">f</a> <a href="#">G</a> <a href="#"></a>
+                </div>
+
+                <p class="toggle-form-text">Already have an account? <span onclick="switchView('view-login')">Sign
+                        in</span></p>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="js/homev2.js"></script>
+</body>
+
+</html>
