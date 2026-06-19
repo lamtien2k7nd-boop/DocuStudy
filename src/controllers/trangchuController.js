@@ -18,11 +18,10 @@ function paginateDocuments(docs, itemsPerPage = 4, subcategoryTargetId) {
                 badge: doc.badge || 'Tài liệu',
                 title: doc.title,
                 link: `/phanloai/${subcategoryTargetId}/${doc.slug}`,
-                downloadCount: (doc.download_count / 1000).toFixed(1) // hiển thị dạng 8.4k
+                downloadCount: (doc.download_count / 1000).toFixed(1)
             }))
         });
     }
-    // Nếu không có document nào, vẫn tạo một page rỗng để tránh lỗi
     if (pages.length === 0) pages.push({ cards: [] });
     return pages;
 }
@@ -55,7 +54,6 @@ exports.getTrangchu = async (req, res) => {
                 link: item.link || `/tin-tuc/${item.id}`
             }));
         } else {
-            // Fallback nếu chưa có tin
             featuredNews = {
                 image: '/img/default-news.jpg',
                 title: 'DocuStudy ra mắt bộ đề thi thử',
@@ -79,7 +77,6 @@ exports.getTrangchu = async (req, res) => {
 
             if (!category) continue;
 
-            // Lấy subcategories (tabs)
             const subcategories = await query(`
                 SELECT id, name, target_id
                 FROM subcategories
@@ -89,7 +86,6 @@ exports.getTrangchu = async (req, res) => {
 
             const tabs = [];
             for (const sub of subcategories) {
-                // Lấy documents của subcategory này
                 const docs = await query(`
                     SELECT id, title, slug, download_count, image_url, badge
                     FROM documents
@@ -98,7 +94,6 @@ exports.getTrangchu = async (req, res) => {
                     LIMIT 8
                 `, [sub.id]);
 
-                // Tạo pages (mỗi page 4 card) với subcategory target_id
                 const pages = paginateDocuments(docs, 4, sub.target_id);
 
                 tabs.push({
@@ -106,7 +101,8 @@ exports.getTrangchu = async (req, res) => {
                     label: sub.name,
                     content: {
                         pages: pages,
-                        label: sub.name   // dùng cho nút "Xem tất cả <label>"
+                        label: sub.name,
+                        viewAllLink: `/phanloai/${sub.target_id}`
                     }
                 });
             }
@@ -134,7 +130,6 @@ exports.getTrangchu = async (req, res) => {
 
             if (!category) continue;
 
-            // Lấy tất cả documents thuộc category này (qua subcategories)
             const docs = await query(`
                 SELECT d.id, d.title, d.slug, d.download_count, d.image_url, d.badge, s.target_id as sub_target_id
                 FROM documents d
@@ -174,7 +169,6 @@ exports.getTrangchu = async (req, res) => {
 
             if (!gradeCat) continue;
 
-            // Lấy các môn học (subcategories)
             const subjects = await query(`
                 SELECT id, name, target_id
                 FROM subcategories
@@ -199,7 +193,8 @@ exports.getTrangchu = async (req, res) => {
                     name: sub.name,
                     content: {
                         pages: pages,
-                        label: sub.name   // cho nút "Xem tất cả môn học"
+                        label: sub.name,
+                        viewAllLink: `/phanloai/${sub.target_id}`
                     }
                 });
             }
@@ -242,7 +237,8 @@ exports.getTrangchu = async (req, res) => {
                 date: '',
                 link: '#'
             },
-            newsList: []
+            newsList: [],
+            allSubcategories: []  // <-- Thêm dòng này
         });
     }
 };
