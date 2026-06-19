@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');
 const adminAuth = require('../middlewares/adminAuth');
+const upload = require('../utils/fileUpload');
 
 // Public Auth Routes
 router.get('/login', adminController.getLogin);
@@ -14,6 +15,7 @@ router.use(adminAuth);
 
 router.get('/dashboard', adminController.getDashboard);
 router.get('/documents', adminController.getDocuments);
+router.post('/documents/upload', upload.single('file'), adminController.postUploadDocument);
 router.post('/documents/:id/delete', adminController.deleteDocument);
 router.post('/documents/add-tag', adminController.addTopicItem);
 

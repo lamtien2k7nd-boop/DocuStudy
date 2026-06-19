@@ -4,16 +4,26 @@ const passport = require('passport');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const { isLoggedIn } = require('../middlewares/authMiddleware');
+const upload = require('../utils/fileUpload');
+
 
 // ==================== ĐĂNG NHẬP/ĐĂNG KÝ THÔNG THƯỜNG ====================
 router.post('/login', authController.postLogin);
 router.post('/register', authController.postRegister);
 router.get('/logout', authController.logout);
 
+// ==================== QUÊN MẬT KHẨU ====================
+router.get('/forgot-password', authController.getForgotPassword);
+router.post('/forgot-password', authController.postForgotPassword);
+router.get('/reset-password/:token', authController.getResetPassword);
+router.post('/reset-password/:token', authController.postResetPassword);
+
+
 // ==================== TRANG PROFILE ====================
 router.get('/profile', isLoggedIn, authController.getProfile);
 router.post('/profile/update', isLoggedIn, authController.postUpdateProfile);
 router.post('/profile/change-password', isLoggedIn, authController.postChangePassword);
+router.post('/upload-document', isLoggedIn, upload.single('file'), authController.postUserUploadDocument);
 
 // ==================== KIỂM TRA TRẠNG THÁI ====================
 router.get('/status', authController.getAuthStatus);

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
     <link rel="stylesheet" href="/css/basev2.css">
+    <link rel="stylesheet" href="/css/auth.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -98,38 +99,85 @@
         </div>
     </div>
 
-    <div id="passModal">
-        <div class="modal-content">
-            <h3 style="margin-top:0">Đổi mật khẩu</h3>
-            <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 20px;">Hệ thống sẽ gửi mã OTP đến email của bạn để xác thực.</p>
-            <div class="input-group">
-                <label>Mật khẩu mới</label>
-                <input type="password" id="newPass" placeholder="••••••••">
+    <div id="passModal" class="auth-page-container" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);">
+        <div class="auth-card" style="max-width: 420px; padding: 32px;">
+            <div class="auth-icon-box">
+                <i data-lucide="shield-check" style="width: 32px; height: 32px;"></i>
             </div>
-            <div class="input-group">
-                <label>Mã OTP (Nhập 123456)</label>
-                <input type="text" id="otpCode" placeholder="6 chữ số">
+            <h2 style="margin-top:0; font-size: 1.5rem;">Đổi mật khẩu</h2>
+            <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 24px;">Nhập mật khẩu hiện tại và mật khẩu mới của bạn.</p>
+            
+            <div id="modalStatus" class="auth-status-msg"></div>
+
+            <div class="auth-form">
+                <div class="auth-input-group">
+                    <label>Mật khẩu hiện tại</label>
+                    <div class="auth-input-wrapper">
+                        <i data-lucide="lock"></i>
+                        <input type="password" id="currentPass" placeholder="••••••••">
+                    </div>
+                </div>
+                <div class="auth-input-group">
+                    <label>Mật khẩu mới</label>
+                    <div class="auth-input-wrapper">
+                        <i data-lucide="key"></i>
+                        <input type="password" id="newPass" placeholder="••••••••">
+                    </div>
+                </div>
+                <button class="auth-submit-btn" onclick="changePass()" id="modalSubmitBtn">Xác nhận đổi mật khẩu</button>
+                <button class="auth-link" style="width:100%; border:none; background:none; margin-top:16px; cursor:pointer;" onclick="document.getElementById('passModal').style.display='none'">Hủy bỏ</button>
             </div>
-            <button class="submit-btn" onclick="changePass()">Xác nhận đổi mật khẩu</button>
-            <button class="btn-change-pass" style="width:100%; border:none; margin-top:10px" onclick="document.getElementById('passModal').style.display='none'">Hủy</button>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
-
+ 
         async function changePass() {
+            const currentPassword = document.getElementById('currentPass').value;
             const newPassword = document.getElementById('newPass').value;
-            const otp = document.getElementById('otpCode').value;
+            const modalStatus = document.getElementById('modalStatus');
+            const submitBtn = document.getElementById('modalSubmitBtn');
+
+            if (!currentPassword || !newPassword) {
+                modalStatus.className = 'auth-status-msg error';
+                modalStatus.innerHTML = 'Vui lòng nhập đầy đủ thông tin!';
+                modalStatus.style.display = 'block';
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Đang xử lý...';
+            modalStatus.style.display = 'none';
             
-            const res = await fetch('/change-password', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: '<%= profileUser.email %>', newPassword, otp })
-            });
-            const data = await res.json();
-            alert(data.message);
-            if (data.success) location.reload();
+            try {
+                const res = await fetch('/auth/profile/change-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ currentPassword, newPassword })
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    modalStatus.className = 'auth-status-msg success';
+                    modalStatus.innerHTML = data.message;
+                    modalStatus.style.display = 'block';
+                    setTimeout(() => location.reload(), 2000);
+                } else {
+                    modalStatus.className = 'auth-status-msg error';
+                    modalStatus.innerHTML = data.message;
+                    modalStatus.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Xác nhận đổi mật khẩu';
+                }
+            } catch (err) {
+                console.error(err);
+                modalStatus.className = 'auth-status-msg error';
+                modalStatus.innerHTML = 'Có lỗi hệ thống!';
+                modalStatus.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Xác nhận đổi mật khẩu';
+            }
         }
     </script>
 </body>

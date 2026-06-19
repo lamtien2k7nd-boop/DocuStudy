@@ -44,6 +44,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // 2. Middleware phục vụ file tĩnh
 app.use(express.static(path.join(__dirname, '/public')));
+app.use('/doccuments', express.static(path.join(__dirname, '../doccuments')));
+
 
 // 3. Middleware log request
 app.use(requestLog.enhancedTimeLogger);

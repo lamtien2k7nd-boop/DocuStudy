@@ -145,7 +145,7 @@
                 Mỗi tài liệu bạn đóng góp đều giúp ích cho hàng ngàn học sinh khác trên khắp cả nước. Tham gia cùng chúng tôi ngay hôm nay!
                 </p>
                 <div class="cta-buttons">
-                <button class="cta-btn-primary">Đăng tải tài liệu</button>
+                <button class="cta-btn-primary" onclick="openUserUploadModal()">Đăng tải tài liệu</button>
                 <button class="cta-btn-secondary">Tìm hiểu thêm</button>
                 </div>
             </div>
@@ -155,6 +155,118 @@
         </section>
         </main>
     <%- include('partials/footer')%>
+ 
+    <!-- Modal Tải Lên Tài Liệu Cho User -->
+    <div id="userUploadModal" class="auth-page-container" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px);">
+        <div class="auth-card" style="max-width: 500px; padding: 40px; border-radius: 32px;">
+            <div class="auth-icon-box" style="background: #eff6ff; color: #3b82f6;">
+                <i data-lucide="upload-cloud" style="width: 32px; height: 32px;"></i>
+            </div>
+            <h2 style="margin-top:0; font-size: 1.75rem; font-weight: 800;">Chia sẻ tri thức</h2>
+            <p style="font-size: 1rem; color: #64748b; margin-bottom: 32px;">Mỗi tài liệu bạn đóng góp là một món quà cho cộng đồng.</p>
+            
+            <div id="uploadStatus" class="auth-status-msg"></div>
+
+            <form id="userUploadForm" class="auth-form">
+                <div class="auth-input-group">
+                    <label>Tiêu đề tài liệu</label>
+                    <div class="auth-input-wrapper">
+                        <i data-lucide="type"></i>
+                        <input type="text" name="title" id="uploadTitle" placeholder="VD: Đề thi thử Toán THPTQG 2026..." required>
+                    </div>
+                </div>
+
+                <div class="auth-input-group">
+                    <label>Danh mục</label>
+                    <div class="auth-input-wrapper">
+                        <i data-lucide="layers"></i>
+                        <select name="subcategory_id" id="uploadSubId" required style="width: 100%; padding: 14px 16px 14px 48px; border: 2px solid #f1f5f9; border-radius: 14px; font-size: 1rem; appearance: none; background: #f8fafc;">
+                            <option value="">Chọn danh mục phù hợp...</option>
+                            <% allSubcategories.forEach(sub => { %>
+                                <option value="<%= sub.id %>"><%= sub.name %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="auth-input-group">
+                    <label>Chọn tệp tin</label>
+                    <div class="auth-input-wrapper" style="border: 2px dashed #e2e8f0; border-radius: 14px; padding: 20px; text-align: center; background: #f8fafc; transition: all 0.3s;">
+                        <input type="file" name="file" id="uploadFile" required style="cursor: pointer;">
+                        <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 8px;">Hỗ trợ: PDF, DOCX, ZIP (Tối đa 10MB)</p>
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-submit-btn" id="uploadSubmitBtn" style="background: #f97316;">
+                    <span>Bắt đầu tải lên ngay</span>
+                    <i data-lucide="send" style="width: 18px; height: 18px;"></i>
+                </button>
+                <button type="button" class="auth-link" style="width:100%; border:none; background:none; margin-top:16px; cursor:pointer;" onclick="closeUserUploadModal()">Lúc khác tôi sẽ chia sẻ</button>
+            </form>
+        </div>
+    </div>
+
     <script src="js/trang_chu.js"></script>
+    <script>
+        lucide.createIcons();
+
+        function openUserUploadModal() {
+            // Kiểm tra đăng nhập qua biến user được inject từ server.js
+            <% if (!user) { %>
+                alert('Vui lòng đăng nhập để thực hiện chức năng này!');
+                return;
+            <% } %>
+            document.getElementById('userUploadModal').style.display = 'flex';
+        }
+
+        function closeUserUploadModal() {
+            document.getElementById('userUploadModal').style.display = 'none';
+        }
+
+        document.getElementById('userUploadForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('title', document.getElementById('uploadTitle').value);
+            formData.append('subcategory_id', document.getElementById('uploadSubId').value);
+            formData.append('file', document.getElementById('uploadFile').files[0]);
+
+            const status = document.getElementById('uploadStatus');
+            const btn = document.getElementById('uploadSubmitBtn');
+
+            btn.disabled = true;
+            btn.innerHTML = 'Đang tải lên...';
+            status.style.display = 'none';
+
+            try {
+                const res = await fetch('/auth/upload-document', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    status.className = 'auth-status-msg success';
+                    status.innerHTML = data.message;
+                    status.style.display = 'block';
+                    document.getElementById('userUploadForm').style.display = 'none';
+                    setTimeout(() => location.reload(), 3000);
+                } else {
+                    status.className = 'auth-status-msg error';
+                    status.innerHTML = data.message;
+                    status.style.display = 'block';
+                    btn.disabled = false;
+                    btn.innerHTML = 'Bắt đầu tải lên ngay';
+                }
+            } catch (err) {
+                console.error(err);
+                status.className = 'auth-status-msg error';
+                status.innerHTML = 'Lỗi hệ thống khi tải lên!';
+                status.style.display = 'block';
+                btn.disabled = false;
+                btn.innerHTML = 'Bắt đầu tải lên ngay';
+            }
+            lucide.createIcons();
+        };
+    </script>
 </body>
 </html>

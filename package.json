@@ -18,6 +18,8 @@
     "express-session": "^1.19.0",
     "express.js": "^1.0.0",
     "fs": "^0.0.1-security",
+    "multer": "^2.2.0",
+    "nodemailer": "^9.0.1",
     "passport": "^0.7.0",
     "passport-discord": "^0.1.4",
     "passport-discord-auth": "^1.2.0",

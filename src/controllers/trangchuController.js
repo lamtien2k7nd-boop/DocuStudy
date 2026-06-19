@@ -213,6 +213,9 @@ exports.getTrangchu = async (req, res) => {
             });
         }
 
+        // ------------------- 5. Lấy tất cả subcategories cho Modal Upload -------------------
+        const allSubcategories = await query('SELECT id, name FROM subcategories ORDER BY name ASC');
+
         // ------------------- Render view -------------------
         res.render('trangchu', {
             examSections,
@@ -220,7 +223,8 @@ exports.getTrangchu = async (req, res) => {
             simpleGridCards,
             gradeSections,
             featuredNews,
-            newsList
+            newsList,
+            allSubcategories
         });
 
     } catch (error) {

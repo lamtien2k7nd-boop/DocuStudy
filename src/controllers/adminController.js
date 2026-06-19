@@ -1,6 +1,7 @@
 // controllers/adminController.js
 const { query, get, run } = require('../config/database');
 const bcrypt = require('bcryptjs');
+const slugify = require('../utils/slugify');
 
 // --- AUTHENTICATION ---
 exports.getLogin = (req, res) => {
@@ -168,6 +169,38 @@ exports.deleteDocument = async (req, res) => {
     } catch (error) {
         console.error('Delete Document Error:', error);
         res.status(500).send('Lỗi khi xóa tài liệu');
+    }
+};
+
+exports.postUploadDocument = async (req, res) => {
+    try {
+        const { title, subcategory_id, description, badge } = req.body;
+        const file = req.file;
+
+        if (!title || !subcategory_id || !file) {
+            return res.status(400).send('Thiếu thông tin tài liệu hoặc chưa tải file!');
+        }
+
+        // Lấy category_slug từ subcategory
+        const subCate = await get('SELECT c.slug as category_slug FROM subcategories s JOIN categories c ON s.category_id = c.id WHERE s.id = ?', [subcategory_id]);
+        
+        if (!subCate) {
+            return res.status(400).send('Subcategory không tồn tại!');
+        }
+
+        const slug = slugify(title) + '-' + Date.now();
+        const download_link = `/doccuments/${file.filename}`;
+        const image_url = 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400'; // Default placeholder
+
+        await run(`
+            INSERT INTO documents (subcategory_id, category_slug, title, slug, description, image_url, badge, download_link)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `, [subcategory_id, subCate.category_slug, title, slug, description || '', image_url, badge || 'Mới', download_link]);
+
+        res.redirect('/admin/documents?msg=success');
+    } catch (error) {
+        console.error('Upload Document Error:', error);
+        res.status(500).send('Lỗi khi tải lên tài liệu: ' + error.message);
     }
 };
 
