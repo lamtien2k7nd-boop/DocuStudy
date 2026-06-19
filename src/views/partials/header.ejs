@@ -10,6 +10,10 @@
             <!-- <a href="#" class="nav-link">Luyện thi<span class="nav-underline"></span></a> -->
             <a href="/congdong" class="nav-link">Cộng đồng<span class="nav-underline"></span></a>
         </nav>
+        <div class="header-search search-wrapper" style="margin: 0 20px; flex: 1; max-width: 400px;">
+            <input type="text" class="search-input" placeholder="Tìm kiếm tài liệu..." style="width: 100%; padding: 8px 16px 8px 40px; border-radius: 9999px; border: 1px solid #e2e8f0; background: #f8fafc; font-size: 0.85rem;">
+            <i data-lucide="search" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; color: #94a3b8;"></i>
+        </div>
         <div class="auth-wrapper">
             <% if (user) { %>
                 <a href="/profile" class="user-profile-link" style="display: flex; align-items: center; gap: 8px; color: #0f172a; text-decoration: none; font-size: 0.9rem; font-weight: 700; padding: 8px 16px; background: #f1f5f9; border-radius: 9999px; transition: all 0.3s ease;">

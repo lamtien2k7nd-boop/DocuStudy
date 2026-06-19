@@ -13,223 +13,45 @@
             --primary: #6366f1;
             --primary-light: #e0e7ff;
             --bg-body: #f8fafc;
-            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --danger: #ef4444;
-            --danger-light: #fee2e2;
-            --success: #10b981;
-            --success-light: #d1fae5;
         }
 
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-body); margin: 0; display: flex; }
 
-        /* Sidebar */
         .sidebar { width: var(--sidebar-width); background: #ffffff; height: 100vh; border-right: 1px solid #e2e8f0; position: fixed; padding: 1.5rem; display: flex; flex-direction: column; }
         .logo { font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 2rem; display: flex; align-items: center; gap: 0.75rem; }
         .nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; color: #64748b; text-decoration: none; border-radius: 0.5rem; transition: all 0.2s; margin-bottom: 0.5rem; }
         .nav-link:hover, .nav-link.active { background: #f1f5f9; color: var(--primary); }
 
-        /* Main */
         .main-content { margin-left: var(--sidebar-width); flex: 1; padding: 2rem; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
         
-        .header { 
-            display: flex; justify-content: space-between; align-items: center; 
-            margin-bottom: 2rem; 
+        .doc-card {
+            background: #fff; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1rem;
+            border: 1px solid #f1f5f9; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         }
-        .header h1 { font-size: 1.5rem; font-weight: 700; color: #1e293b; }
+        .doc-header { display: flex; justify-content: space-between; align-items: center; }
+        .doc-title { font-weight: 700; font-size: 1.1rem; color: #1e293b; }
+        
+        .tag-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+        .tag-badge {
+            padding: 4px 12px; background: #f1f5f9; border-radius: 9999px; font-size: 0.8rem;
+            display: flex; align-items: center; gap: 6px; color: #475569;
+        }
+        .tag-badge.category { background: #fee2e2; color: #ef4444; }
+        .tag-badge.subcategory { background: #eff6ff; color: #3b82f6; }
+        .btn-del-tag { border: none; background: none; color: #94a3b8; cursor: pointer; padding: 0; display: flex; }
+        .btn-del-tag:hover { color: #ef4444; }
 
-        /* Add Topic Button */
-        .btn-add-topic {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            padding: 0.625rem 1.25rem;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: #fff; border: none; border-radius: 0.75rem;
-            font-size: 0.875rem; font-weight: 600; cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
-        }
-        .btn-add-topic:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45); }
-
-        /* Topic Group Card */
-        .topic-group {
-            background: #fff; border-radius: 1rem; margin-bottom: 1.5rem;
-            border: 1px solid #f1f5f9;
-            box-shadow: var(--card-shadow);
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        .topic-group:hover { box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.1); }
-
-        .topic-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 1.25rem 1.5rem;
-            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-            border-bottom: 1px solid #e2e8f0;
-            cursor: pointer;
-            user-select: none;
-        }
-        .topic-header:hover { background: linear-gradient(135deg, #f1f5f9, #e2e8f0); }
-
-        .topic-title {
-            display: flex; align-items: center; gap: 0.75rem;
-            font-weight: 700; font-size: 1rem; color: #1e293b;
-        }
-        .topic-title .icon-circle {
-            width: 36px; height: 36px; background: var(--primary-light); color: var(--primary);
-            border-radius: 0.5rem; display: flex; align-items: center; justify-content: center;
-        }
-        .topic-count {
-            background: var(--primary-light); color: var(--primary);
-            padding: 0.25rem 0.75rem; border-radius: 9999px;
-            font-size: 0.75rem; font-weight: 700;
+        .btn-add-tag {
+            padding: 8px 16px; background: var(--primary); color: #fff;
+            border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
+            font-size: 0.85rem;
         }
 
-        .topic-actions {
-            display: flex; align-items: center; gap: 0.5rem;
-        }
-
-        .btn-icon {
-            width: 32px; height: 32px; border-radius: 0.5rem;
-            display: flex; align-items: center; justify-content: center;
-            border: none; cursor: pointer; transition: all 0.2s;
-            background: transparent;
-        }
-        .btn-icon:hover { background: #f1f5f9; }
-        .btn-icon.danger:hover { background: var(--danger-light); color: var(--danger); }
-        .btn-icon.primary:hover { background: var(--primary-light); color: var(--primary); }
-
-        .chevron-icon { transition: transform 0.3s ease; }
-        .topic-group.collapsed .chevron-icon { transform: rotate(-90deg); }
-
-        /* Tag items area */
-        .topic-body {
-            padding: 1.25rem 1.5rem;
-            transition: max-height 0.4s ease, padding 0.3s ease;
-            overflow: hidden;
-        }
-        .topic-group.collapsed .topic-body { 
-            max-height: 0; padding-top: 0; padding-bottom: 0; 
-        }
-
-        .tag-items-list {
-            display: flex; flex-wrap: wrap; gap: 0.625rem;
-        }
-
-        .tag-chip {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            padding: 0.5rem 0.875rem; background: #f8fafc;
-            border: 1px solid #e2e8f0; border-radius: 9999px;
-            font-size: 0.8125rem; color: #475569;
-            transition: all 0.2s ease;
-            animation: fadeInUp 0.3s ease forwards;
-        }
-        .tag-chip:hover { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
-
-        .tag-chip .tag-delete {
-            width: 18px; height: 18px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            background: transparent; border: none; cursor: pointer;
-            color: #94a3b8; font-size: 0.75rem;
-            transition: all 0.2s;
-        }
-        .tag-chip:hover .tag-delete { color: var(--danger); background: var(--danger-light); }
-
-        .add-tag-inline {
-            display: inline-flex; align-items: center; gap: 0.375rem;
-            padding: 0.5rem 0.875rem; background: var(--success-light);
-            border: 1px dashed var(--success); border-radius: 9999px;
-            font-size: 0.8125rem; color: var(--success);
-            cursor: pointer; transition: all 0.2s ease;
-        }
-        .add-tag-inline:hover { background: #a7f3d0; border-style: solid; }
-
-        .empty-tag-message {
-            color: #94a3b8; font-size: 0.875rem; font-style: italic;
-            padding: 0.5rem 0;
-        }
-
-        /* ===== MODALS ===== */
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
-            z-index: 1000; align-items: center; justify-content: center;
-        }
+        /* Modal simple */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; }
         .modal-overlay.active { display: flex; }
-
-        .modal-box {
-            background: #fff; border-radius: 1rem; padding: 2rem;
-            width: 420px; max-width: 90vw;
-            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-            animation: slideUp 0.3s ease;
-        }
-
-        .modal-box h3 {
-            font-size: 1.125rem; font-weight: 700; color: #1e293b;
-            margin-bottom: 1.5rem;
-            display: flex; align-items: center; gap: 0.5rem;
-        }
-
-        .form-group { margin-bottom: 1.25rem; }
-        .form-group label {
-            display: block; font-size: 0.8125rem; font-weight: 600;
-            color: #475569; margin-bottom: 0.5rem;
-        }
-        .form-group input, .form-group select {
-            width: 100%; padding: 0.625rem 0.875rem;
-            border: 1px solid #e2e8f0; border-radius: 0.5rem;
-            font-size: 0.875rem; font-family: inherit;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            box-sizing: border-box;
-        }
-        .form-group input:focus, .form-group select:focus {
-            outline: none; border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-        }
-
-        .modal-actions {
-            display: flex; justify-content: flex-end; gap: 0.75rem;
-            margin-top: 1.5rem;
-        }
-
-        .btn-cancel {
-            padding: 0.625rem 1.25rem; background: #f1f5f9; color: #64748b;
-            border: none; border-radius: 0.5rem; font-weight: 600;
-            cursor: pointer; transition: all 0.2s;
-        }
-        .btn-cancel:hover { background: #e2e8f0; }
-
-        .btn-submit {
-            padding: 0.625rem 1.25rem;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: #fff; border: none; border-radius: 0.5rem;
-            font-weight: 600; cursor: pointer; transition: all 0.2s;
-        }
-        .btn-submit:hover { transform: translateY(-1px); }
-
-        .btn-submit.danger {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-        }
-
-        /* Toast notification */
-        .toast {
-            position: fixed; bottom: 2rem; right: 2rem;
-            padding: 0.875rem 1.25rem; border-radius: 0.75rem;
-            color: #fff; font-weight: 600; font-size: 0.875rem;
-            box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.2);
-            z-index: 2000; animation: slideUp 0.3s ease;
-            display: none;
-        }
-        .toast.success { background: linear-gradient(135deg, #10b981, #059669); }
-        .toast.error { background: linear-gradient(135deg, #ef4444, #dc2626); }
-
-        /* Animations */
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .modal-box { background: #fff; padding: 2rem; border-radius: 1rem; width: 400px; }
     </style>
 </head>
 <body>
@@ -238,6 +60,7 @@
         <nav>
             <a href="/admin/dashboard" class="nav-link"><i data-lucide="home"></i> Dashboard</a>
             <a href="/admin/documents" class="nav-link"><i data-lucide="file-text"></i> Tài liệu</a>
+            <a href="/admin/structure" class="nav-link"><i data-lucide="database"></i> Cấu trúc đề thi</a>
             <a href="/admin/tags" class="nav-link active"><i data-lucide="tag"></i> Quản lý Tag</a>
             <a href="/admin/logout" class="nav-link"><i data-lucide="log-out"></i> Đăng xuất</a>
         </nav>
@@ -245,168 +68,72 @@
 
     <main class="main-content">
         <header class="header">
-            <div>
-                <h1>Quản lý Tag hệ thống</h1>
-                <p style="color: #64748b; margin-top: 0.25rem; font-size: 0.875rem;">
-                    Tag lớn (Topics) chứa các tag con (Topic Items) — gán cho tài liệu
-                </p>
-            </div>
-            <button class="btn-add-topic" onclick="openAddTopicModal()">
-                <i data-lucide="plus" style="width:16px;"></i> Thêm Topic mới
-            </button>
+            <h1>Quản lý Tag tài liệu</h1>
+            <p style="color: #64748b;">Gán các tag (từ Categories/Subcategories) cho tài liệu để tìm kiếm dễ dàng hơn.</p>
         </header>
 
-        <!-- Topic Groups -->
-        <% if (topics && topics.length > 0) { %>
-            <% topics.forEach((topic, idx) => { %>
-                <div class="topic-group" style="animation-delay: <%= idx * 0.05 %>s">
-                    <div class="topic-header" onclick="toggleTopic(this)">
-                        <div class="topic-title">
-                            <div class="icon-circle">
-                                <i data-lucide="folder" style="width:18px;"></i>
-                            </div>
-                            <span><%= topic.title %></span>
-                            <span class="topic-count"><%= topic.items ? topic.items.length : 0 %> tag con</span>
-                        </div>
-                        <div class="topic-actions" onclick="event.stopPropagation()">
-                            <button class="btn-icon primary" title="Thêm tag con" onclick="openAddTagItemModal(<%= topic.id %>, '<%= topic.title.replace(/'/g, "\\'") %>')">
-                                <i data-lucide="plus-circle" style="width:16px;"></i>
-                            </button>
-                            <form action="/admin/tags/topic/<%= topic.id %>/delete" method="POST" style="display:inline" onsubmit="return confirm('Xóa topic &quot;<%= topic.title %>&quot; và tất cả tag con? Hành động này không thể hoàn tác!')">
-                                <button type="submit" class="btn-icon danger" title="Xóa topic">
-                                    <i data-lucide="trash-2" style="width:16px;"></i>
-                                </button>
-                            </form>
-                            <i data-lucide="chevron-down" class="chevron-icon" style="width:18px; color:#94a3b8;"></i>
-                        </div>
-                    </div>
-                    <div class="topic-body">
-                        <div class="tag-items-list">
-                            <% if (topic.items && topic.items.length > 0) { %>
-                                <% topic.items.forEach(item => { %>
-                                    <div class="tag-chip">
-                                        <i data-lucide="hash" style="width:12px;"></i>
-                                        <span><%= item.content %></span>
-                                        <form action="/admin/tags/item/<%= item.id %>/delete" method="POST" style="display:inline;" onsubmit="return confirm('Xóa tag &quot;<%= item.content %>&quot;?')">
-                                            <button type="submit" class="tag-delete" title="Xóa tag">
-                                                <i data-lucide="x" style="width:12px;"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                <% }); %>
-                            <% } else { %>
-                                <p class="empty-tag-message">Chưa có tag con nào trong topic này.</p>
-                            <% } %>
-                            <div class="add-tag-inline" onclick="openAddTagItemModal(<%= topic.id %>, '<%= topic.title.replace(/'/g, "\\'") %>')">
-                                <i data-lucide="plus" style="width:12px;"></i> Thêm tag
-                            </div>
-                        </div>
-                    </div>
+        <% documents.forEach(doc => { %>
+            <div class="doc-card">
+                <div class="doc-header">
+                    <div class="doc-title"><%= doc.title %></div>
+                    <button class="btn-add-tag" onclick="openAddTagModal(<%= doc.id %>, '<%= doc.title.replace(/'/g, "\\'") %>')">Thêm Tag</button>
                 </div>
-            <% }); %>
-        <% } else { %>
-            <div style="text-align: center; padding: 4rem 2rem; background: #fff; border-radius: 1rem; box-shadow: var(--card-shadow);">
-                <i data-lucide="tag" style="width:48px; height:48px; color:#cbd5e1; margin-bottom: 1rem;"></i>
-                <h3 style="color: #94a3b8; font-weight: 600;">Chưa có Topic nào</h3>
-                <p style="color: #cbd5e1; margin-bottom: 1.5rem;">Bắt đầu bằng cách tạo Topic đầu tiên!</p>
-                <button class="btn-add-topic" onclick="openAddTopicModal()">
-                    <i data-lucide="plus" style="width:16px;"></i> Tạo Topic
-                </button>
+                <div class="tag-list">
+                    <% if (doc.tags && doc.tags.length > 0) { %>
+                        <% doc.tags.forEach(tag => { %>
+                            <div class="tag-badge <%= tag.type %>">
+                                <span><%= tag.label %></span>
+                                <form action="/admin/tags/delete" method="POST" style="display:inline;">
+                                    <input type="hidden" name="tag_id" value="<%= tag.id %>">
+                                    <button type="submit" class="btn-del-tag"><i data-lucide="x" style="width:14px;"></i></button>
+                                </form>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <span style="color: #cbd5e1; font-style: italic; font-size: 0.85rem;">Chưa có tag nào</span>
+                    <% } %>
+                </div>
             </div>
-        <% } %>
+        <% }) %>
     </main>
 
-    <!-- Modal: Thêm Topic mới -->
-    <div class="modal-overlay" id="addTopicModal">
+    <div class="modal-overlay" id="addTagModal">
         <div class="modal-box">
-            <h3><i data-lucide="folder-plus" style="width:20px; color:var(--primary);"></i> Thêm Topic mới</h3>
-            <form action="/admin/tags/topic/add" method="POST">
-                <div class="form-group">
-                    <label>Tên Topic (Tag lớn)</label>
-                    <input type="text" name="title" required placeholder="VD: Cấu trúc đề, Nội dung kiến thức...">
-                </div>
-                <div class="form-group">
-                    <label>Gán cho tài liệu (tùy chọn)</label>
-                    <select name="document_id">
-                        <option value="">-- Tạo topic chung (không gán tài liệu) --</option>
-                        <% if (documents && documents.length > 0) { %>
-                            <% documents.forEach(doc => { %>
-                                <option value="<%= doc.id %>"><%= doc.title %></option>
-                            <% }); %>
-                        <% } %>
+            <h3 id="modalTitle">Thêm Tag</h3>
+            <form action="/admin/tags/add" method="POST">
+                <input type="hidden" name="document_id" id="modalDocId">
+                <div style="margin-bottom: 1rem;">
+                    <label style="display:block; margin-bottom: 0.5rem; font-size: 0.85rem; font-weight: 600;">Chọn Tag từ hệ thống</label>
+                    <select name="tag_data" required style="width:100%; padding: 8px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <optgroup label="Categories">
+                            <% categories.forEach(cat => { %>
+                                <option value="category:<%= cat.slug %>:<%= cat.name %>"><%= cat.name %></option>
+                            <% }) %>
+                        </optgroup>
+                        <optgroup label="Subcategories">
+                            <% subcategories.forEach(sub => { %>
+                                <option value="subcategory:<%= sub.target_id %>:<%= sub.name %>"><%= sub.name %></option>
+                            <% }) %>
+                        </optgroup>
                     </select>
                 </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn-cancel" onclick="closeModal('addTopicModal')">Hủy</button>
-                    <button type="submit" class="btn-submit">Tạo Topic</button>
+                <div style="display:flex; justify-content: flex-end; gap: 0.5rem;">
+                    <button type="button" onclick="closeModal()" style="padding: 8px 16px; border:none; border-radius: 8px; cursor:pointer;">Hủy</button>
+                    <button type="submit" style="padding: 8px 16px; background: var(--primary); color:#fff; border:none; border-radius: 8px; cursor:pointer;">Thêm</button>
                 </div>
             </form>
         </div>
     </div>
-
-    <!-- Modal: Thêm Tag con -->
-    <div class="modal-overlay" id="addTagItemModal">
-        <div class="modal-box">
-            <h3><i data-lucide="tag" style="width:20px; color:var(--primary);"></i> Thêm Tag con</h3>
-            <form action="/admin/tags/item/add" method="POST">
-                <input type="hidden" name="topic_id" id="tagItemTopicId">
-                <div class="form-group">
-                    <label>Topic: <strong id="tagItemTopicName"></strong></label>
-                </div>
-                <div class="form-group">
-                    <label>Nội dung Tag</label>
-                    <input type="text" name="content" required placeholder="VD: Hàm số, Xác suất, Đại số...">
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn-cancel" onclick="closeModal('addTagItemModal')">Hủy</button>
-                    <button type="submit" class="btn-submit">Thêm Tag</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Toast -->
-    <div class="toast" id="toast"></div>
 
     <script>
         lucide.createIcons();
-
-        // Toggle topic collapse
-        function toggleTopic(header) {
-            const group = header.closest('.topic-group');
-            group.classList.toggle('collapsed');
+        function openAddTagModal(id, title) {
+            document.getElementById('modalDocId').value = id;
+            document.getElementById('modalTitle').innerText = 'Thêm Tag cho: ' + title;
+            document.getElementById('addTagModal').classList.add('active');
         }
-
-        // Modal helpers
-        function openAddTopicModal() {
-            document.getElementById('addTopicModal').classList.add('active');
-        }
-
-        function openAddTagItemModal(topicId, topicName) {
-            document.getElementById('tagItemTopicId').value = topicId;
-            document.getElementById('tagItemTopicName').textContent = topicName;
-            document.getElementById('addTagItemModal').classList.add('active');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('active');
-        }
-
-        // Close modal on overlay click
-        document.querySelectorAll('.modal-overlay').forEach(overlay => {
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) overlay.classList.remove('active');
-            });
-        });
-
-        // Show toast from query param
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('msg')) {
-            const toast = document.getElementById('toast');
-            toast.textContent = decodeURIComponent(urlParams.get('msg'));
-            toast.className = 'toast ' + (urlParams.get('type') || 'success');
-            toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        function closeModal() {
+            document.getElementById('addTagModal').classList.remove('active');
         }
     </script>
 </body>

@@ -146,6 +146,23 @@ exports.getChiTietDe = async (req, res) => {
             documentTitle: document.title
         };
 
+        // 10.5. Lấy tags bổ sung từ table mới
+        const manualTags = await query(`
+            SELECT id, type, target_id FROM document_tags WHERE document_id = ?
+        `, [document.id]);
+        
+        for (let tag of manualTags) {
+            if (tag.type === 'category') {
+                const cat = await get('SELECT name FROM categories WHERE slug = ?', [tag.target_id]);
+                tag.label = cat ? cat.name : tag.target_id;
+                tag.link = `/phanloai?cat=${tag.target_id}`;
+            } else {
+                const sub = await get('SELECT name FROM subcategories WHERE target_id = ?', [tag.target_id]);
+                tag.label = sub ? sub.name : tag.target_id;
+                tag.link = `/phanloai/${tag.target_id}`;
+            }
+        }
+
         // 11. Render view
         res.render('chitietde', {
             title: document.title || 'Chi tiết tài liệu',
@@ -156,6 +173,7 @@ exports.getChiTietDe = async (req, res) => {
             comments,
             relatedDocs: formattedRelated,
             breadcrumb,
+            manualTags, // Chuyền vào view
             postCategory: subcategory ? subcategory.name : 'Tài liệu',
             entryTitle: {
                 main: document.title,

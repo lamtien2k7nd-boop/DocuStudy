@@ -19,11 +19,16 @@ router.post('/documents/upload', upload.single('file'), adminController.postUplo
 router.post('/documents/:id/delete', adminController.deleteDocument);
 router.post('/documents/add-tag', adminController.addTopicItem);
 
-// Tag Management Routes
+// Exam Content Structure Management (Old Topics/Items)
+router.get('/structure', adminController.getStructure);
+router.post('/structure/topic/add', adminController.addStructureTopic);
+router.post('/structure/topic/:id/delete', adminController.deleteStructureTopic);
+router.post('/structure/item/add', adminController.addStructureItem);
+router.post('/structure/item/:id/delete', adminController.deleteStructureItem);
+
+// New Tag Management (Categories/Subcategories as tags)
 router.get('/tags', adminController.getTags);
-router.post('/tags/topic/add', adminController.addTopic);
-router.post('/tags/topic/:id/delete', adminController.deleteTopic);
-router.post('/tags/item/add', adminController.addTagItem);
-router.post('/tags/item/:id/delete', adminController.deleteTagItem);
+router.post('/tags/add', adminController.postAddTag);
+router.post('/tags/delete', adminController.postDeleteTag);
 
 module.exports = router;

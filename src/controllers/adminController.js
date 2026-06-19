@@ -1,206 +1,152 @@
 // controllers/adminController.js
 const { query, get, run } = require('../config/database');
-const bcrypt = require('bcryptjs');
-const slugify = require('../utils/slugify');
 
-// --- AUTHENTICATION ---
 exports.getLogin = (req, res) => {
-    if (req.session.isAdmin) return res.redirect('/admin/dashboard');
+    if (req.session.admin) return res.redirect('/admin/dashboard');
     res.render('admin/login', { error: null });
 };
 
 exports.postLogin = async (req, res) => {
     const { username, password } = req.body;
-    try {
-        const user = await get('SELECT * FROM users WHERE username = ? AND role = "admin"', [username]);
-        
-        if (!user) {
-            return res.render('admin/login', { error: 'Sai tài khoản hoặc mật khẩu quản trị!' });
-        }
-
-        const isMatch = await bcrypt.compare(password, user.password_hash);
-        if (!isMatch) {
-            return res.render('admin/login', { error: 'Sai tài khoản hoặc mật khẩu quản trị!' });
-        }
-
-        req.session.isAdmin = true;
-        req.session.user = {
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            role: user.role,
-            full_name: user.full_name || user.username,
-            avatar_url: user.avatar_url || '/images/default-avatar.png'
-        };
-
+    if (username === 'admin' && password === 'admin123') {
+        req.session.admin = { username: 'admin' };
         return res.redirect('/admin/dashboard');
-    } catch (err) {
-        console.error('Admin login error:', err);
-        res.render('admin/login', { error: 'Lỗi hệ thống' });
     }
+    res.render('admin/login', { error: 'Sai tài khoản hoặc mật khẩu' });
 };
 
 exports.logout = (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error('Logout error:', err);
-        }
-        res.redirect('/');
-    });
+    delete req.session.admin;
+    res.redirect('/admin/login');
 };
 
-// --- DASHBOARD ---
 exports.getDashboard = async (req, res) => {
     try {
-        const totalVisitsResult = await get('SELECT SUM(view_count) as total FROM documents');
-        const totalUsersResult = await get('SELECT COUNT(*) as total FROM users');
-        const totalDocsResult = await get('SELECT COUNT(*) as total FROM documents');
-        const totalDownloadsResult = await get('SELECT SUM(download_count) as total FROM documents');
+        const stats = {
+            docs: (await get('SELECT COUNT(*) as count FROM documents')).count,
+            users: (await get('SELECT COUNT(*) as count FROM users')).count,
+            downloads: (await get('SELECT SUM(download_count) as total FROM documents')).total || 0,
+            visits: (await get('SELECT COUNT(*) as count FROM access_logs WHERE type = "view"')).count
+        };
 
+        const recentDocs = await query('SELECT * FROM documents ORDER BY created_at DESC LIMIT 5');
+        const topDocs = await query('SELECT * FROM documents ORDER BY view_count DESC LIMIT 5');
+
+        // Lấy top người dùng hoạt động (ví dụ qua log truy cập)
         const topUsers = await query(`
-            SELECT u.username, COUNT(c.id) as activity_count 
+            SELECT u.username, COUNT(al.id) as activity_count
             FROM users u
-            JOIN comments c ON u.id = c.user_id
+            JOIN access_logs al ON u.id = al.user_id
             GROUP BY u.id
             ORDER BY activity_count DESC
             LIMIT 5
         `);
 
-        const topDocs = await query(`
-            SELECT title, view_count 
-            FROM documents 
-            ORDER BY view_count DESC 
-            LIMIT 5
-        `);
-
-        res.render('admin/dashboard', {
-            stats: {
-                visits: totalVisitsResult?.total || 0,
-                users: totalUsersResult?.total || 0,
-                docs: totalDocsResult?.total || 0,
-                downloads: totalDownloadsResult?.total || 0
-            },
+        res.render('admin/dashboard', { 
+            stats, 
+            recentDocs, 
+            topDocs, 
             topUsers: topUsers || [],
-            topDocs: topDocs || [],
-            user: req.session.user || null
+            user: req.session.admin 
         });
-    } catch (error) {
-        console.error('Admin Dashboard Error:', error);
-        res.status(500).render('error', {
-            title: 'Lỗi Dashboard',
-            message: 'Không thể tải dữ liệu dashboard',
-            error: process.env.NODE_ENV === 'development' ? error : {}
-        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
     }
 };
 
-// --- DOCUMENT MANAGEMENT ---
 exports.getDocuments = async (req, res) => {
     try {
-        const subCate = req.query.sub_cate;
-        const tagFilter = req.query.tag;
+        const { sub_cate, tag } = req.query;
+        const subCate = sub_cate || '';
+        const tagFilter = tag || '';
 
         let sql = `
-            SELECT DISTINCT d.*, s.name as sub_cate_name 
+            SELECT d.*, s.name as subcategory_name
             FROM documents d
-            JOIN subcategories s ON d.subcategory_id = s.id
-            LEFT JOIN topics t ON d.id = t.document_id
-            LEFT JOIN topic_items ti ON t.id = ti.topic_id
+            LEFT JOIN subcategories s ON d.subcategory_id = s.id
+            WHERE 1=1
         `;
-        let params = [];
-        let conditions = [];
+        const params = [];
 
         if (subCate) {
-            conditions.push(`s.target_id = ?`);
+            sql += ` AND s.target_id = ?`;
             params.push(subCate);
         }
-
         if (tagFilter) {
-            conditions.push(`ti.content LIKE ?`);
+            sql += ` AND d.id IN (
+                SELECT t.document_id 
+                FROM topics t 
+                JOIN topic_items ti ON t.id = ti.topic_id 
+                WHERE ti.content LIKE ?
+            )`;
             params.push(`%${tagFilter}%`);
         }
 
-        if (conditions.length > 0) {
-            sql += ` WHERE ` + conditions.join(' AND ');
-        }
+        sql += ` ORDER BY s.name ASC, d.created_at DESC`;
 
-        const docs = await query(sql, params);
+        const documents = await query(sql, params);
 
-        // Lấy tags hiện tại cho mỗi document
-        for (let doc of docs) {
-            const docTags = await query(`
-                SELECT t.title as topic_title, ti.content as tag_content, ti.id as tag_id
+        // Lấy tags cho từng document
+        for (let doc of documents) {
+            doc.tags = await query(`
+                SELECT t.title as topic_title, ti.id as tag_id, ti.content as tag_content
                 FROM topics t
                 JOIN topic_items ti ON t.id = ti.topic_id
                 WHERE t.document_id = ?
-                ORDER BY t.display_order ASC, ti.display_order ASC
             `, [doc.id]);
-            doc.tags = docTags || [];
         }
 
+        // Group theo subcategory
         const groupedDocs = {};
-        docs.forEach(doc => {
-            if (!groupedDocs[doc.sub_cate_name]) {
-                groupedDocs[doc.sub_cate_name] = [];
+        documents.forEach(doc => {
+            const groupName = doc.subcategory_name || 'Khác';
+            if (!groupedDocs[groupName]) {
+                groupedDocs[groupName] = [];
             }
-            groupedDocs[doc.sub_cate_name].push(doc);
+            groupedDocs[groupName].push(doc);
         });
 
-        const subcategories = await query('SELECT * FROM subcategories');
+        const subcategories = await query('SELECT * FROM subcategories ORDER BY name ASC');
 
-        res.render('admin/documents', {
-            groupedDocs,
-            subcategories,
-            subCate,
-            tagFilter,
-            user: req.session.user || null
+        res.render('admin/documents', { 
+            groupedDocs, 
+            subcategories, 
+            subCate, 
+            tagFilter, 
+            user: req.session.admin 
         });
-    } catch (error) {
-        console.error('Admin Documents Error:', error);
-        res.status(500).send('Lỗi máy chủ');
-    }
-};
-
-exports.deleteDocument = async (req, res) => {
-    try {
-        const { id } = req.params;
-        await run('DELETE FROM documents WHERE id = ?', [id]);
-        res.redirect('/admin/documents');
-    } catch (error) {
-        console.error('Delete Document Error:', error);
-        res.status(500).send('Lỗi khi xóa tài liệu');
+    } catch (err) {
+        console.error('getDocuments Error:', err);
+        res.status(500).send('Server Error');
     }
 };
 
 exports.postUploadDocument = async (req, res) => {
     try {
-        const { title, subcategory_id, description, badge } = req.body;
-        const file = req.file;
-
-        if (!title || !subcategory_id || !file) {
-            return res.status(400).send('Thiếu thông tin tài liệu hoặc chưa tải file!');
-        }
-
-        // Lấy category_slug từ subcategory
-        const subCate = await get('SELECT c.slug as category_slug FROM subcategories s JOIN categories c ON s.category_id = c.id WHERE s.id = ?', [subcategory_id]);
+        const { title, description, subcategory_id, badge } = req.body;
+        const slug = title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+        const image_url = req.file ? '/uploads/' + req.file.filename : '/img/default-doc.jpg';
         
-        if (!subCate) {
-            return res.status(400).send('Subcategory không tồn tại!');
-        }
-
-        const slug = slugify(title) + '-' + Date.now();
-        const download_link = `/doccuments/${file.filename}`;
-        const image_url = 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400'; // Default placeholder
-
         await run(`
-            INSERT INTO documents (subcategory_id, category_slug, title, slug, description, image_url, badge, download_link)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        `, [subcategory_id, subCate.category_slug, title, slug, description || '', image_url, badge || 'Mới', download_link]);
+            INSERT INTO documents (title, slug, description, image_url, subcategory_id, badge, download_link, is_published)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 1)
+        `, [title, slug, description, image_url, subcategory_id, badge, '#']);
+        
+        res.redirect('/admin/documents');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+};
 
-        res.redirect('/admin/documents?msg=success');
-    } catch (error) {
-        console.error('Upload Document Error:', error);
-        res.status(500).send('Lỗi khi tải lên tài liệu: ' + error.message);
+exports.deleteDocument = async (req, res) => {
+    try {
+        await run('DELETE FROM documents WHERE id = ?', [req.params.id]);
+        res.redirect('/admin/documents');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
     }
 };
 
@@ -208,29 +154,31 @@ exports.addTopicItem = async (req, res) => {
     try {
         const { document_id, topic_title, content } = req.body;
         
-        let topic = await get('SELECT id FROM topics WHERE document_id = ? AND title = ?', [document_id, topic_title]);
+        // 1. Tìm hoặc tạo Topic
+        let topic = await get('SELECT id FROM topics WHERE title = ? AND document_id = ?', [topic_title, document_id]);
+        
         let topicId;
         if (!topic) {
-            const result = await run('INSERT INTO topics (document_id, title) VALUES (?, ?)', [document_id, topic_title]);
+            const result = await run('INSERT INTO topics (title, document_id) VALUES (?, ?)', [topic_title, document_id]);
             topicId = result.lastID;
         } else {
             topicId = topic.id;
         }
 
+        // 2. Thêm Tag vào Topic đó
         await run('INSERT INTO topic_items (topic_id, content) VALUES (?, ?)', [topicId, content]);
+        
         res.redirect('/admin/documents');
-    } catch (error) {
-        console.error('Add Topic Item Error:', error);
-        res.status(500).send('Lỗi khi thêm tag/topic');
+    } catch (err) {
+        console.error('addTopicItem Error:', err);
+        res.status(500).send('Server Error');
     }
 };
 
-// --- TAG MANAGEMENT ---
+// --- EXAM CONTENT STRUCTURE MANAGEMENT ---
 
-// GET /admin/tags — Trang quản lý tag: hiển thị Topics (tag lớn) chứa Topic Items (tag con)
-exports.getTags = async (req, res) => {
+exports.getStructure = async (req, res) => {
     try {
-        // Lấy tất cả topics cùng items
         const topics = await query(`
             SELECT t.id, t.title, t.document_id, t.display_order,
                    d.title as document_title
@@ -249,13 +197,81 @@ exports.getTags = async (req, res) => {
             topic.items = items || [];
         }
 
-        // Lấy danh sách documents để hiển thị trong dropdown
         const documents = await query('SELECT id, title FROM documents ORDER BY title ASC');
 
-        res.render('admin/tags', { 
+        res.render('admin/cau_truc_de', { 
             topics: topics || [],
             documents: documents || [],
-            user: req.session.user || null
+            user: req.session.admin
+        });
+    } catch (error) {
+        console.error('Admin Structure Error:', error);
+        res.status(500).send('Lỗi máy chủ');
+    }
+};
+
+exports.addStructureTopic = async (req, res) => {
+    try {
+        const { title, document_id } = req.body;
+        if (!title || !title.trim()) return res.redirect('/admin/structure?msg=Error');
+        const docId = document_id && document_id !== '' ? parseInt(document_id) : null;
+        await run('INSERT INTO topics (title, document_id) VALUES (?, ?)', [title.trim(), docId]);
+        res.redirect('/admin/structure?msg=Success');
+    } catch (error) { res.redirect('/admin/structure?msg=Error'); }
+};
+
+exports.deleteStructureTopic = async (req, res) => {
+    try {
+        await run('DELETE FROM topics WHERE id = ?', [req.params.id]);
+        res.redirect('/admin/structure?msg=Deleted');
+    } catch (error) { res.redirect('/admin/structure?msg=Error'); }
+};
+
+exports.addStructureItem = async (req, res) => {
+    try {
+        const { topic_id, content } = req.body;
+        await run('INSERT INTO topic_items (topic_id, content) VALUES (?, ?)', [topic_id, content.trim()]);
+        res.redirect('/admin/structure?msg=Added');
+    } catch (error) { res.redirect('/admin/structure?msg=Error'); }
+};
+
+exports.deleteStructureItem = async (req, res) => {
+    try {
+        await run('DELETE FROM topic_items WHERE id = ?', [req.params.id]);
+        res.redirect('/admin/structure?msg=Deleted');
+    } catch (error) { res.redirect('/admin/structure?msg=Error'); }
+};
+
+// --- NEW TAG MANAGEMENT ---
+
+exports.getTags = async (req, res) => {
+    try {
+        const documents = await query('SELECT id, title FROM documents ORDER BY title ASC');
+        for (let doc of documents) {
+            const tags = await query(`
+                SELECT id, target_id, type FROM document_tags WHERE document_id = ?
+            `, [doc.id]);
+            
+            for (let tag of tags) {
+                if (tag.type === 'category') {
+                    const cat = await get('SELECT name FROM categories WHERE slug = ?', [tag.target_id]);
+                    tag.label = cat ? cat.name : tag.target_id;
+                } else {
+                    const sub = await get('SELECT name FROM subcategories WHERE target_id = ?', [tag.target_id]);
+                    tag.label = sub ? sub.name : tag.target_id;
+                }
+            }
+            doc.tags = tags;
+        }
+
+        const categories = await query('SELECT id, name, slug FROM categories');
+        const subcategories = await query('SELECT id, name, target_id FROM subcategories');
+
+        res.render('admin/tags', {
+            documents,
+            categories,
+            subcategories,
+            user: req.session.admin
         });
     } catch (error) {
         console.error('Admin Tags Error:', error);
@@ -263,82 +279,22 @@ exports.getTags = async (req, res) => {
     }
 };
 
-// POST /admin/tags/topic/add — Thêm Topic mới (tag lớn)
-exports.addTopic = async (req, res) => {
+exports.postAddTag = async (req, res) => {
     try {
-        const { title, document_id } = req.body;
+        const { document_id, tag_data } = req.body;
+        const [type, target_id] = tag_data.split(':');
         
-        if (!title || !title.trim()) {
-            return res.redirect('/admin/tags?msg=' + encodeURIComponent('Tên topic không được trống') + '&type=error');
+        const exists = await get('SELECT id FROM document_tags WHERE document_id = ? AND target_id = ?', [document_id, target_id]);
+        if (!exists) {
+            await run('INSERT INTO document_tags (document_id, type, target_id) VALUES (?, ?, ?)', [document_id, type, target_id]);
         }
-
-        const docId = document_id && document_id !== '' ? parseInt(document_id) : null;
-        
-        // Kiểm tra nếu đã có topic trùng tên cho document này
-        if (docId) {
-            const existing = await get('SELECT id FROM topics WHERE title = ? AND document_id = ?', [title.trim(), docId]);
-            if (existing) {
-                return res.redirect('/admin/tags?msg=' + encodeURIComponent('Topic đã tồn tại cho tài liệu này') + '&type=error');
-            }
-        }
-
-        await run('INSERT INTO topics (title, document_id) VALUES (?, ?)', [title.trim(), docId]);
-        res.redirect('/admin/tags?msg=' + encodeURIComponent('Đã thêm topic "' + title.trim() + '"') + '&type=success');
-    } catch (error) {
-        console.error('Add Topic Error:', error);
-        res.redirect('/admin/tags?msg=' + encodeURIComponent('Lỗi khi thêm topic') + '&type=error');
-    }
+        res.redirect('/admin/tags?msg=Added');
+    } catch (error) { res.redirect('/admin/tags?msg=Error'); }
 };
 
-// POST /admin/tags/topic/:id/delete — Xóa Topic (và tất cả tag con)
-exports.deleteTopic = async (req, res) => {
+exports.postDeleteTag = async (req, res) => {
     try {
-        const { id } = req.params;
-        
-        // Cascade delete: topic_items sẽ tự xóa do FK ON DELETE CASCADE
-        await run('DELETE FROM topics WHERE id = ?', [id]);
-        res.redirect('/admin/tags?msg=' + encodeURIComponent('Đã xóa topic thành công') + '&type=success');
-    } catch (error) {
-        console.error('Delete Topic Error:', error);
-        res.redirect('/admin/tags?msg=' + encodeURIComponent('Lỗi khi xóa topic') + '&type=error');
-    }
-};
-
-// POST /admin/tags/item/add — Thêm Tag con (Topic Item)
-exports.addTagItem = async (req, res) => {
-    try {
-        const { topic_id, content } = req.body;
-
-        if (!content || !content.trim()) {
-            return res.redirect('/admin/tags?msg=' + encodeURIComponent('Nội dung tag không được trống') + '&type=error');
-        }
-
-        if (!topic_id) {
-            return res.redirect('/admin/tags?msg=' + encodeURIComponent('Thiếu topic ID') + '&type=error');
-        }
-
-        // Kiểm tra trùng lặp
-        const existing = await get('SELECT id FROM topic_items WHERE topic_id = ? AND content = ?', [topic_id, content.trim()]);
-        if (existing) {
-            return res.redirect('/admin/tags?msg=' + encodeURIComponent('Tag "' + content.trim() + '" đã tồn tại trong topic này') + '&type=error');
-        }
-
-        await run('INSERT INTO topic_items (topic_id, content) VALUES (?, ?)', [topic_id, content.trim()]);
-        res.redirect('/admin/tags?msg=' + encodeURIComponent('Đã thêm tag "' + content.trim() + '"') + '&type=success');
-    } catch (error) {
-        console.error('Add Tag Item Error:', error);
-        res.redirect('/admin/tags?msg=' + encodeURIComponent('Lỗi khi thêm tag') + '&type=error');
-    }
-};
-
-// POST /admin/tags/item/:id/delete — Xóa Tag con (Topic Item)
-exports.deleteTagItem = async (req, res) => {
-    try {
-        const { id } = req.params;
-        await run('DELETE FROM topic_items WHERE id = ?', [id]);
-        res.redirect('/admin/tags?msg=' + encodeURIComponent('Đã xóa tag thành công') + '&type=success');
-    } catch (error) {
-        console.error('Delete Tag Item Error:', error);
-        res.redirect('/admin/tags?msg=' + encodeURIComponent('Lỗi khi xóa tag') + '&type=error');
-    }
+        await run('DELETE FROM document_tags WHERE id = ?', [req.body.tag_id]);
+        res.redirect('/admin/tags?msg=Deleted');
+    } catch (error) { res.redirect('/admin/tags?msg=Error'); }
 };

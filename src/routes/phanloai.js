@@ -4,7 +4,11 @@ const router = express.Router();
 const phanloaiController = require('../controllers/phanloaiController');
 const detheophanloaiController = require('../controllers/detheophanloaiController');
 const chitietdeController = require('../controllers/chitietdeController');
+const searchController = require('../controllers/searchController');
 const { isLoggedIn } = require('../middlewares/authMiddleware');
+
+// Route tìm kiếm
+router.get('/api/search', searchController.apiSearch);
 
 // Route thêm comment
 router.post('/:slug/comment', isLoggedIn, chitietdeController.postComment);
