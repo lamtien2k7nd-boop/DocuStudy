@@ -23,6 +23,7 @@ exports.getPhanloai = async (req, res) => {
             }))
         }));
         res.render ('phanloai',{
+            title: 'DocuStudy - Phân loại',
             categories: formattedCategories,            
         });
     } catch (error) {

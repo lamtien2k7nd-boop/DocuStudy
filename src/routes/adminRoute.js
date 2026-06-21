@@ -26,9 +26,18 @@ router.post('/structure/topic/:id/delete', adminController.deleteStructureTopic)
 router.post('/structure/item/add', adminController.addStructureItem);
 router.post('/structure/item/:id/delete', adminController.deleteStructureItem);
 
+const { upload: cloudinaryUpload } = require('../utils/cloudinaryConfig');
+
 // New Tag Management (Categories/Subcategories as tags)
 router.get('/tags', adminController.getTags);
 router.post('/tags/add', adminController.postAddTag);
 router.post('/tags/delete', adminController.postDeleteTag);
+
+// General Settings
+router.get('/settings', adminController.getGeneralSettings);
+router.post('/settings/update', cloudinaryUpload.fields([
+    { name: 'logo', maxCount: 1 },
+    { name: 'favicon', maxCount: 1 }
+]), adminController.postUpdateSettings);
 
 module.exports = router;

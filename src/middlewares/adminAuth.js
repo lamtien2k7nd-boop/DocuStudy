@@ -4,5 +4,5 @@ module.exports = (req, res, next) => {
         return next();
     }
     // Nếu chưa đăng nhập admin, chuyển hướng về trang login
-    res.redirect('/admin/login');
+    res.redirect('/');
 };

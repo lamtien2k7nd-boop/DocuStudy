@@ -101,6 +101,7 @@ exports.getDetheophanloai = async (req, res) => {
 
         // 10. Render
         res.render('detheophanloai', {
+            title: `DocuStudy - ${subcategory.name}`,
             breadcrumb,
             currentCategory,
             trendingItems,

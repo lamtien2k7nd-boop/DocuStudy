@@ -298,3 +298,63 @@ exports.postDeleteTag = async (req, res) => {
         res.redirect('/admin/tags?msg=Deleted');
     } catch (error) { res.redirect('/admin/tags?msg=Error'); }
 };
+
+// --- GENERAL SETTINGS MANAGEMENT ---
+
+exports.getGeneralSettings = async (req, res) => {
+    try {
+        const settings = await get('SELECT * FROM settings WHERE id = 1');
+        res.render('admin/settings', { 
+            settings, 
+            user: req.session.admin,
+            msg: req.query.msg || null
+        });
+    } catch (error) {
+        console.error('getGeneralSettings Error:', error);
+        res.status(500).send('Lỗi máy chủ');
+    }
+};
+
+exports.postUpdateSettings = async (req, res) => {
+    try {
+        const { 
+            site_name, phone, email, address, 
+            description, slogan, 
+            facebook_url, youtube_url, tiktok_url 
+        } = req.body;
+
+        let logo_url = req.body.current_logo;
+        let favicon_url = req.body.current_favicon;
+
+        // Nếu có upload file mới qua Cloudinary
+        if (req.files) {
+            if (req.files.logo && req.files.logo[0]) {
+                logo_url = req.files.logo[0].path;
+            }
+            if (req.files.favicon && req.files.favicon[0]) {
+                favicon_url = req.files.favicon[0].path;
+            }
+        }
+
+        await run(`
+            UPDATE settings 
+            SET site_name = ?, logo_url = ?, favicon_url = ?, 
+                phone = ?, email = ?, address = ?, 
+                description = ?, slogan = ?, 
+                facebook_url = ?, youtube_url = ?, tiktok_url = ?,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE id = 1
+        `, [
+            site_name, logo_url, favicon_url, 
+            phone, email, address, 
+            description, slogan, 
+            facebook_url, youtube_url, tiktok_url
+        ]);
+
+        res.redirect('/admin/settings?msg=Updated');
+    } catch (error) {
+        console.error('postUpdateSettings Error:', error);
+        res.redirect('/admin/settings?msg=Error');
+    }
+};
+

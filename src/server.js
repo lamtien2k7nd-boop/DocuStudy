@@ -75,19 +75,35 @@ app.use('/tin-tuc', newsRouter);
 const authController = require('./controllers/authController');
 app.get('/download/:id', async (req, res) => {
     try {
-        const doc = await require('./config/database').get('SELECT * FROM documents WHERE id = ?', [req.params.id]);
+        const db = require('./config/database');
+        const doc = await db.get(`
+            SELECT d.*, s.target_id as sub_target 
+            FROM documents d 
+            LEFT JOIN subcategories s ON d.subcategory_id = s.id 
+            WHERE d.id = ?`, [req.params.id]);
+
         if (!doc) return res.status(404).send('File not found');
         
+        // Prevent redirect loop if link is '#' or empty
+        if (!doc.download_link || doc.download_link === '#' || doc.download_link.trim() === '') {
+            if (doc.sub_target && doc.slug) {
+                return res.redirect(`/phanloai/${doc.sub_target}/${doc.slug}?msg=Link+đang+được+cập+nhật`);
+            }
+            return res.status(400).send('Tài liệu hiện chưa có link tải. Vui lòng quay lại sau.');
+        }
+        
         // Log download
-        require('./config/database').run('UPDATE documents SET download_count = download_count + 1 WHERE id = ?', [doc.id]);
-        if (req.session.user) {
-            require('./config/database').run('INSERT INTO access_logs (user_id, document_id, type) VALUES (?, ?, "download")', 
-                [req.session.user.id, doc.id]);
+        db.run('UPDATE documents SET download_count = download_count + 1 WHERE id = ?', [doc.id]);
+        if (req.user || req.session.user) {
+            const userId = (req.user ? req.user.id : req.session.user.id);
+            db.run('INSERT INTO access_logs (user_id, document_id, type) VALUES (?, ?, "download")', 
+                [userId, doc.id]);
         }
         
         // Redirect to actual file link
         res.redirect(doc.download_link);
     } catch (err) {
+        console.error('Download error:', err);
         res.status(500).send('Server Error');
     }
 });

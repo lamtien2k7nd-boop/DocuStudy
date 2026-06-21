@@ -213,6 +213,7 @@ exports.getTrangchu = async (req, res) => {
 
         // ------------------- Render view -------------------
         res.render('trangchu', {
+            title: 'DocuStudy - Trang chủ',
             examSections,
             simpleGridSections,
             simpleGridCards,

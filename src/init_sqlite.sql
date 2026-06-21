@@ -153,6 +153,27 @@ CREATE INDEX idx_news_date ON news(date);
 CREATE INDEX idx_news_is_featured ON news(is_featured);
 
 -- =============================================
+-- 11.5. BẢNG SETTINGS (Cài đặt chung)
+-- =============================================
+CREATE TABLE IF NOT EXISTS settings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    site_name VARCHAR(255) DEFAULT 'DocuStudy',
+    logo_url VARCHAR(255) DEFAULT '/images/logo.png',
+    favicon_url VARCHAR(255) DEFAULT '/favicon.ico',
+    phone VARCHAR(20) DEFAULT '',
+    email VARCHAR(100) DEFAULT '',
+    address TEXT DEFAULT '',
+    description TEXT DEFAULT '',
+    slogan TEXT DEFAULT '',
+    facebook_url VARCHAR(255) DEFAULT '',
+    youtube_url VARCHAR(255) DEFAULT '',
+    tiktok_url VARCHAR(255) DEFAULT '',
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO settings (id, site_name) VALUES (1, 'DocuStudy');
+
+-- =============================================
 -- 12. DỮ LIỆU MẪU (INSERT)
 -- =============================================
 
