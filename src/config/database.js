@@ -1,45 +1,42 @@
 // config/database.js
-const sqlite3 = require('sqlite3').verbose();
+const Database = require('better-sqlite3');
 const path = require('path');
 
 const dbPath = path.resolve(__dirname, '../../database/docustudy.db');
-
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error('Lỗi kết nối database:', err.message);
-  } else {
-    console.log('Kết nối SQLite thành công!');
-  }
-});
+const db = new Database(dbPath);
 
 // Hàm query (SELECT nhiều dòng)
 function query(sql, params = []) {
-  return new Promise((resolve, reject) => {
-    db.all(sql, params, (err, rows) => {
-      if (err) reject(err);
-      else resolve(rows);
-    });
-  });
+    try {
+        const stmt = db.prepare(sql);
+        return stmt.all(...params);
+    } catch (err) {
+        console.error('Query error:', err);
+        throw err;
+    }
 }
 
 // Hàm get (SELECT 1 dòng)
 function get(sql, params = []) {
-  return new Promise((resolve, reject) => {
-    db.get(sql, params, (err, row) => {
-      if (err) reject(err);
-      else resolve(row);
-    });
-  });
+    try {
+        const stmt = db.prepare(sql);
+        return stmt.get(...params);
+    } catch (err) {
+        console.error('Get error:', err);
+        throw err;
+    }
 }
 
 // Hàm run (INSERT, UPDATE, DELETE)
 function run(sql, params = []) {
-  return new Promise((resolve, reject) => {
-    db.run(sql, params, function(err) {
-      if (err) reject(err);
-      else resolve({ lastID: this.lastID, changes: this.changes });
-    });
-  });
+    try {
+        const stmt = db.prepare(sql);
+        const result = stmt.run(...params);
+        return { lastID: result.lastInsertRowid, changes: result.changes };
+    } catch (err) {
+        console.error('Run error:', err);
+        throw err;
+    }
 }
 
 module.exports = { db, query, get, run };
